@@ -1,41 +1,34 @@
-﻿---
+---
 title: "REFATORACAO"
 category: "29 - REFATORACAO"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - refatoracao
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 29 — REFATORACAO
+# 29 — REFATORAÇÃO
 
 > [!info] Categoria da Knowledge Base
-> Code smells, técnicas de refatoração, boy scout rule
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Code smells, técnicas de refatoração, boy scout rule
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Code smells, técnicas de refatoração, boy scout rule.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Refatoracao]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Catálogo de Code Smells (nota própria)
+- [ ] Refatorações do Fowler, uma a uma (Extract, Inline, Move…)
+- [ ] Testes de caracterização para código legado
+- [ ] Replace Conditional with Polymorphism
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[Clean Code]]
+- [[TDD - Test-Driven Development]]
+- [[30 - LEGACY SYSTEMS/_INDEX]]

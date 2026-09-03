@@ -1,184 +1,135 @@
 ---
-type: conceito
-status: ready
-created: 2026-09-03
-updated: 2026-09-03
-tags: [conceito, engenharia, padrões, ready]
-related: []
+title: "SOLID Principles"
+category: "32 - SOLID"
+tags:
+  - engenharia-software
+  - solid
+  - design
+  - oop
+  - conceito
+status: "verified"
+created: "2026-09-03"
+updated: "2026-09-03"
+sources_checked: 2026-09-03
 ---
 
-# SOLID Principles
+# SOLID — Cinco Princípios de Design OO
 
-SOLID é um acrônimo para 5 princípios de design orientado a objetos que tornam código mais legível, mantenível e extensível.
+## Resumo
 
----
+**SOLID** é um acrônimo mnemônico para cinco princípios de design orientado a objetos que tornam o código mais **compreensível, flexível e manutenível**. Introduzidos por **Robert C. Martin** ("Uncle Bob") no paper *Design Principles and Design Patterns* (2000, sobre *software rot*); o acrônimo foi cunhado por **Michael Feathers** (~2004).
 
-## Os 5 Princípios
+## O que é? — Os 5 princípios
 
-### 1. **S** — Single Responsibility Principle (SRP)
-Uma classe deve ter **apenas uma razão para mudar**.
-
-**Significa**: Cada classe/módulo deve ter uma única responsabilidade bem definida.
+### S — Single Responsibility Principle (SRP)
+"Uma classe nunca deve ter mais de uma razão para mudar" — ou seja, **uma única responsabilidade**.
+- **Ganhos:** manutenibilidade, testabilidade, mudanças isoladas.
+- Aumenta [[Coesao e Acoplamento|coesão]].
 
 ```python
-# ❌ Ruim — Múltiplas responsabilidades
-class User:
-    def create_user(self): pass
-    def send_email(self): pass
-    def generate_report(self): pass
+# ❌ duas responsabilidades: regra + persistência
+class Fatura:
+    def calcular_total(self): ...
+    def salvar_no_banco(self): ...
 
-# ✅ Bom — Uma responsabilidade por classe
-class User:
-    def create_user(self): pass
-
-class EmailService:
-    def send_email(self): pass
-
-class ReportGenerator:
-    def generate_report(self): pass
+# ✅ separadas
+class Fatura:
+    def calcular_total(self): ...
+class FaturaRepository:
+    def salvar(self, fatura): ...
 ```
 
----
-
-### 2. **O** — Open/Closed Principle (OCP)
-Classes devem estar **abertas para extensão** mas **fechadas para modificação**.
-
-**Significa**: Você deve conseguir estender comportamento sem modificar código existente.
+### O — Open–Closed Principle (OCP)
+"Entidades de software devem ser **abertas para extensão, fechadas para modificação**." Adicione comportamento novo sem alterar código existente (via polimorfismo/abstrações).
 
 ```python
-# ❌ Ruim — Precisa modificar classe existente
-class PaymentProcessor:
-    def process(self, payment_type):
-        if payment_type == "credit_card":
-            # processo
-        elif payment_type == "paypal":
-            # processo
-
-# ✅ Bom — Extensível sem modificação
-class PaymentProcessor:
-    def process(self, payment_gateway):
-        payment_gateway.process()
-
-class CreditCardGateway:
-    def process(self): pass
-
-class PayPalGateway:
-    def process(self): pass
+# ✅ novo meio de pagamento sem tocar no processador
+class Pagamento:  # abstração
+    def pagar(self, v): ...
+class Pix(Pagamento): ...
+class Cartao(Pagamento): ...
+def processar(p: Pagamento, v): p.pagar(v)
 ```
 
----
+### L — Liskov Substitution Principle (LSP)
+Objetos de uma subclasse devem poder **substituir** os da superclasse **sem quebrar** o programa. Subtipos honram o contrato do supertipo (ligado a *Design by Contract*).
+- Clássico anti-exemplo: `Quadrado` herdando de `Retângulo` quebra invariantes.
 
-### 3. **L** — Liskov Substitution Principle (LSP)
-Subclasses devem ser **substituíveis** por suas classes base.
-
-**Significa**: Se S é subtipo de T, instâncias de S devem substituir instâncias de T sem quebrar o programa.
+### I — Interface Segregation Principle (ISP)
+Clientes **não devem ser forçados a depender** de métodos que não usam. Prefira **interfaces pequenas e específicas** a uma "gorda".
 
 ```python
-# ❌ Ruim — Viola LSP
-class Bird:
-    def fly(self): pass
-
-class Penguin(Bird):
-    def fly(self):
-        raise NotImplementedError("Penguins can't fly")
-
-# ✅ Bom — Respeitando LSP
-class Bird:
-    def move(self): pass
-
-class FlyingBird(Bird):
-    def fly(self): pass
-
-class Penguin(Bird):
-    def swim(self): pass
+# ❌ interface gorda
+class Maquina:  # imprimir, escanear, faxear...
+# ✅ segregada
+class Impressora: def imprimir(self): ...
+class Scanner: def escanear(self): ...
 ```
 
----
-
-### 4. **I** — Interface Segregation Principle (ISP)
-Clientes não devem ser forçados a depender de interfaces que não usam.
-
-**Significa**: Múltiplas interfaces específicas são melhores que uma interface genérica.
+### D — Dependency Inversion Principle (DIP)
+Módulos de alto nível **não devem depender** de módulos de baixo nível; ambos dependem de **abstrações**. Detalhes dependem de abstrações, não o contrário. Base da **injeção de dependência**.
 
 ```python
-# ❌ Ruim — Interface gigante
-class Animal:
-    def eat(self): pass
-    def fly(self): pass
-    def swim(self): pass
-
-# ✅ Bom — Interfaces segregadas
-class Eater:
-    def eat(self): pass
-
-class Flyer:
-    def fly(self): pass
-
-class Swimmer:
-    def swim(self): pass
-
-class Duck(Eater, Flyer, Swimmer):
-    pass
-
-class Fish(Eater, Swimmer):
-    pass
+class Notificador:            # alto nível depende de abstração
+    def __init__(self, canal: Canal): self.canal = canal
+class Canal: ...              # abstração
+class Email(Canal): ...       # detalhe
 ```
 
----
+## Por que existe?
 
-### 5. **D** — Dependency Inversion Principle (DIP)
-Dependa de abstrações, não de implementações concretas.
+Combater o **apodrecimento do software** (*software rot*): rigidez, fragilidade, imobilidade e viscosidade que surgem quando o design não absorve mudanças. SOLID torna o código adaptável a requisitos que mudam.
 
-**Significa**: Classes de alto nível não devem depender de classes de baixo nível. Ambas devem depender de abstrações.
+## Quando utilizar
 
-```python
-# ❌ Ruim — Dependência em implementação
-class UserService:
-    def __init__(self):
-        self.db = MySQLDatabase()  # Acoplado a MySQL
+- Sistemas OO de médio/grande porte, mantidos por tempo.
+- Onde requisitos evoluem e testes automatizados importam.
 
-# ✅ Bom — Dependência injetada
-class UserService:
-    def __init__(self, database):  # Abstração
-        self.db = database
+## Quando NÃO utilizar (com moderação)
 
-# Pode usar qualquer banco de dados
-service = UserService(MySQLDatabase())
-service = UserService(MongoDBDatabase())
-```
+- Scripts pequenos e descartáveis: aplicar SOLID inteiro é sobre-engenharia.
+- Cuidado com **abstração prematura** (conflito com [[DRY, KISS e YAGNI|YAGNI/AHA]]): introduza a abstração quando a variação realmente aparecer.
 
----
+## Trade-offs
 
-## Por Que SOLID Importa?
+- Mais flexível e testável **vs.** mais classes/indireção.
+- Excesso de interfaces e camadas pode reduzir legibilidade — equilíbrio com [[DRY, KISS e YAGNI|KISS]].
 
-✅ **Código mais legível** — Fácil de entender  
-✅ **Mais mantenível** — Fácil de modificar  
-✅ **Mais testável** — Fácil de testar  
-✅ **Menos acoplamento** — Menos interdependências  
-✅ **Mais extensível** — Fácil de adicionar features  
+## Erros comuns / Anti-patterns
 
----
+- Confundir SRP com "uma classe = um método".
+- OCP via `if/else` gigante em vez de polimorfismo.
+- Violar LSP com subclasses que lançam `NotImplemented`.
+- DIP "de mentira": injetar classe concreta em vez de abstração.
 
-## Quando Usar?
+## Boas práticas
 
-- ✅ Em projetos grandes
-- ✅ Em código que será mantido por tempo longo
-- ✅ Em equipes (código compartilhado)
-- ⚠️ Equilibre — Don't over-engineer
+- SRP → alta [[Coesao e Acoplamento|coesão]]; DIP/ISP → baixo acoplamento.
+- Combinar com [[08 - DESIGN PATTERNS/Design Patterns - Introduction|Design Patterns]] (Strategy, Factory, Observer implementam SOLID).
+- Guiar por testes ([[TDD - Test-Driven Development|TDD]]) — código testável tende a ser SOLID.
 
----
+## Conceitos relacionados
 
-## Relacionados
+- [[Orientacao a Objetos]]
+- [[Coesao e Acoplamento]]
+- [[DRY, KISS e YAGNI]]
+- [[08 - DESIGN PATTERNS/Design Patterns - Introduction|Design Patterns]]
+- [[31 - CLEAN CODE/Clean Code|Clean Code]]
 
-- [[Design Patterns]] — Implementação de SOLID
-- [[Clean Code]] — Boas práticas gerais
-- [[03 - ENGENHARIA DE SOFTWARE/]] — Mais conceitos
+## Perguntas importantes
 
----
+### Quem criou o SOLID?
+Os princípios são de **Robert C. Martin** (2000); o acrônimo foi cunhado por **Michael Feathers** (~2004).
 
-**Dica**: SOLID não é um dogma. Use quando fizer sentido, não sempre.
+### SOLID só vale para OO?
+Nasceu no OO, mas a filosofia (responsabilidade única, depender de abstrações) influencia design ágil e até programação funcional.
 
----
+## Fontes
 
-**Status**: ready  
-**Última revisão**: 2026-09-03
+1. Wikipedia — SOLID — https://en.wikipedia.org/wiki/SOLID (consultado 2026-09-03)
+2. Martin, R. C. (2000). *Design Principles and Design Patterns.*
+3. Martin, R. C. *Agile Software Development, Principles, Patterns, and Practices* (2002).
+
+## Observações
+
+Detalhar LSP (Design by Contract) e exemplos de violação em nota própria. Status: verified (autoria e definições confirmadas).

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01 - FUNDAMENTOS/SDLC - Ciclo de Vida do Software.md",
+                "file": "01 - FUNDAMENTOS/SWEBOK - Corpo de Conhecimento.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "SDLC - Ciclo de Vida do Software"
+              "title": "SWEBOK - Corpo de Conhecimento"
             }
           }
         ]
@@ -187,6 +187,11 @@
   },
   "active": "8931156bf3125683",
   "lastOpenFiles": [
+    "29 - REFATORACAO/Refatoracao.md",
+    "17 - TESTES/TDD - Test-Driven Development.md",
+    "17 - TESTES/Testes - Fundamentos e Piramide.md",
+    "31 - CLEAN CODE/Clean Code.md",
+    "01 - FUNDAMENTOS/SDLC - Ciclo de Vida do Software.md",
     "01 - FUNDAMENTOS/Getting-Started.md",
     "01 - FUNDAMENTOS/Engenharia de Software.md",
     "05 - PRINCÍPIOS DE SOFTWARE/Coesao e Acoplamento.md",
@@ -200,7 +205,6 @@
     "05 - PRINCÍPIOS DE SOFTWARE/_INDEX.md",
     "05 - PRINCÍPIOS DE SOFTWARE/DRY, KISS e YAGNI.md",
     "05 - PRINCÍPIOS DE SOFTWARE",
-    "01 - FUNDAMENTOS/SDLC - Ciclo de Vida do Software.md",
     "01 - FUNDAMENTOS/SWEBOK - Corpo de Conhecimento.md",
     "Knowledge Base Dashboard.md",
     "00 - INDEX.md",
@@ -212,10 +216,6 @@
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Specializations/java-spring-boot-patterns.md",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Specializations/django-drf-patterns.md",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Specializations/chartjs-visualization.md",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Specializations/backend-database-patterns.md",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Agent-Config.md",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/COMPLETE_AGENTS_SPECIALIZATIONS.md",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/System-Overview.md",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/start-backend.sh",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Specializations",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes",
