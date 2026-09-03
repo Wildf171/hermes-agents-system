@@ -1,10 +1,11 @@
-﻿---
+---
 title: "GIT E VERSIONAMENTO"
 category: "26 - GIT E VERSIONAMENTO"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - git
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,30 @@ updated: "2026-09-03"
 # 26 — GIT E VERSIONAMENTO
 
 > [!info] Categoria da Knowledge Base
-> Git, branching, workflows, GitHub, monorepo
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
+> Git, branching, workflows, GitHub, monorepo.
 
 ## Escopo
 
-Git, branching, workflows, GitHub, monorepo
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+Controle de versão distribuído com Git e práticas de colaboração.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Git - Fundamentos]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Git Workflows (Git Flow, GitHub Flow, Trunk-Based Development)
+- [ ] Merge vs Rebase (nota aprofundada) + resolução de conflitos
+- [ ] Pull Requests e code review
+- [ ] Monorepo vs Polyrepo
+- [ ] Git LFS e boas práticas de `.gitignore`
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[16 - CI-CD/_INDEX|CI/CD]]
+- [[27 - DOCUMENTACAO/_INDEX|Documentação]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.

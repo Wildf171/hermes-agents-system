@@ -1,41 +1,46 @@
-﻿---
+---
 title: "PROGRAMACAO"
 category: "06 - PROGRAMACAO"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - programacao
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 06 — PROGRAMACAO
+# 06 — PROGRAMAÇÃO
 
 > [!info] Categoria da Knowledge Base
-> Linguagens, paradigmas, OOP, funcional, estruturas de dados, algoritmos
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
+> Linguagens, paradigmas, OOP, funcional, estruturas de dados, algoritmos.
 
 ## Escopo
 
-Linguagens, paradigmas, OOP, funcional, estruturas de dados, algoritmos
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+Fundamentos de programação: paradigmas, linguagens específicas, estruturas de dados e algoritmos.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Paradigmas de Programacao]] ✅ verified
+- [[Python - Fundamentals]] (migrado)
+- `Java/` — curso Java-OOP (migrado)
+- `JavaScript/` — curso JavaScript (migrado)
+
+## Tópicos planejados
+
+- [ ] Estruturas de Dados (arrays, listas, árvores, grafos, hash) — **próximo**
+- [ ] Algoritmos e Complexidade (Big-O) — **próximo**
+- [ ] Orientação a Objetos (nota aprofundada)
+- [ ] Programação Funcional (imutabilidade, funções puras)
+- [ ] TypeScript, Go, Rust (fundamentos)
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[05 - PRINCÍPIOS DE SOFTWARE/_INDEX]]
+- [[32 - SOLID/_INDEX]]
+- [[08 - DESIGN PATTERNS/_INDEX]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.

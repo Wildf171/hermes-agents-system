@@ -1,10 +1,11 @@
-﻿---
+---
 title: "PRINCÍPIOS DE SOFTWARE"
 category: "05 - PRINCÍPIOS DE SOFTWARE"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - principios
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,31 @@ updated: "2026-09-03"
 # 05 — PRINCÍPIOS DE SOFTWARE
 
 > [!info] Categoria da Knowledge Base
-> DRY, KISS, YAGNI, coesão, acoplamento, separação de responsabilidades
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
+> DRY, KISS, YAGNI, coesão, acoplamento, separação de responsabilidades.
 
 ## Escopo
 
-DRY, KISS, YAGNI, coesão, acoplamento, separação de responsabilidades
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+Heurísticas e princípios de design que orientam código simples, manutenível e de baixo acoplamento.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[DRY, KISS e YAGNI]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Coesão e Acoplamento (nota própria)
+- [ ] Separação de Responsabilidades (SoC)
+- [ ] Princípio da Menor Surpresa (POLA)
+- [ ] Law of Demeter
+- [ ] Composição sobre herança
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[32 - SOLID/_INDEX|SOLID]]
+- [[31 - CLEAN CODE/_INDEX|Clean Code]]
+- [[43 - ANTIPATTERNS/_INDEX|Anti-patterns]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
