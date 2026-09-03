@@ -1,0 +1,224 @@
+{
+  "main": {
+    "id": "6643ba3be9b5a25f",
+    "type": "split",
+    "children": [
+      {
+        "id": "5abd2685cc07c2b1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f75b96bfafd66921",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Nova aba"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f7ecf2b0eb54285a",
+    "type": "split",
+    "children": [
+      {
+        "id": "98673dc6e710f737",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ac8194c4fcb338b8",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "33eac3e888bdae1b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "43ae12652d617305",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f3873e99a20458ec",
+    "type": "split",
+    "children": [
+      {
+        "id": "87e37e4a8b0e7585",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d0c08c243c6ede70",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos"
+            }
+          },
+          {
+            "id": "7df4242d75c90d40",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída"
+            }
+          },
+          {
+            "id": "471c9987dcae6dfc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "2962dfdd20b476cf",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas as propriedades"
+            }
+          },
+          {
+            "id": "0b4188bbd214c757",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Criar nova base": false
+    }
+  },
+  "active": "f75b96bfafd66921",
+  "lastOpenFiles": [
+    "Sem título.md",
+    "23 - CHECKLISTS/Security Audit Checklist.md",
+    "23 - CHECKLISTS/Refactoring Checklist.md",
+    "23 - CHECKLISTS/Performance Optimization Checklist.md",
+    "23 - CHECKLISTS/Deploy Checklist.md",
+    "23 - CHECKLISTS/Code Review Checklist.md",
+    "23 - CHECKLISTS",
+    "00 - SYSTEM/Templates/Template - Projeto.md",
+    "00 - SYSTEM/Templates/Template - MOC.md",
+    "00 - SYSTEM/Templates/Template - Conceito.md",
+    "00 - SYSTEM/Templates/Template - Checklista.md",
+    "00 - SYSTEM/Templates/Template - ADR.md",
+    "00 - SYSTEM/Obsidian/Graph-View-Guide.md",
+    "00 - SYSTEM/Obsidian/Tags-Sistema.md",
+    "00 - SYSTEM/Obsidian/Frontmatter-Padrão.md",
+    "00 - SYSTEM/_README.md",
+    "00 - SYSTEM/_Knowledge_Base_Status.md",
+    "00 - SYSTEM/_Dashboard.md",
+    "00 - SYSTEM/Templates",
+    "00 - SYSTEM/Obsidian",
+    "00 - SYSTEM",
+    "neo-projects-vault/13 - DEVOPS/Sem título.md",
+    "neo-projects-vault/Dashboards/Study-Dashboard.md",
+    "neo-projects-vault/FASE_8_RELATORIO_FINAL.md",
+    "neo-projects-vault/FASE_7_DUPLICACOES.md",
+    "neo-projects-vault/FASE_6_LINKS.md",
+    "neo-projects-vault/FASE_5_CONCLUIDA.md",
+    "neo-projects-vault/04 - ENGENHARIA DE SOFTWARE/Design Patterns - Introduction.md",
+    "neo-projects-vault/04 - ENGENHARIA DE SOFTWARE/SOLID Principles.md",
+    "neo-projects-vault/04 - ENGENHARIA DE SOFTWARE",
+    "neo-projects-vault/Dashboards/Overview.md",
+    "neo-projects-vault/99 - INBOX",
+    "neo-projects-vault/23 - CHECKLISTS",
+    "neo-projects-vault/21 - ADR",
+    "neo-projects-vault/17 - IA & AGENTS",
+    "neo-projects-vault/16 - DOCUMENTAÇÃO",
+    "neo-projects-vault/Neo.jpg"
+  ]
+}

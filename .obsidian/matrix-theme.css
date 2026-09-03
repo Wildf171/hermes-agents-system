@@ -1,0 +1,79 @@
+/* Matrix Theme - Dark Green on Black */
+.theme-dark, .theme-light {
+    --background-primary: rgba(0, 0, 0, 0.70) !important;
+    --background-primary-alt: rgba(0, 0, 0, 0.80) !important;
+    --background-secondary: rgba(0, 0, 0, 0.85) !important;
+    --background-secondary-alt: rgba(0, 0, 0, 0.90) !important;
+    --background-modifier: rgba(0, 0, 0, 0.75) !important;
+    --background-modifier-alt: rgba(0, 0, 0, 0.80) !important;
+    --background-modifier-background: rgba(0, 0, 0, 0.65) !important;
+    --text-normal: #00FF41 !important;
+    --text-muted: #008F11 !important;
+    --text-accent: #00FF41 !important;
+    --text-accent-hover: #39FF14 !important;
+    --text-error: #FF0033 !important;
+    --text-warning: #FFAA00 !important;
+    --interactive-accent: #00FF41 !important;
+    --interactive-accent-hover: #39FF14 !important;
+    --h1-color: #00FF41 !important;
+    --h2-color: #00FF41 !important;
+    --h3-color: #00FF41 !important;
+    --h4-color: #00CC33 !important;
+    --h5-color: #00CC33 !important;
+    --h6-color: #009926 !important;
+    --background-modifier-border: rgba(0, 255, 65, 0.3) !important;
+    --text-code: #00FF41 !important;
+    --color-success: #00FF41 !important;
+    --color-warning: #FFAA00 !important;
+    --color-error: #FF0033 !important;
+}
+body {
+    background-image: url("app://local/C:/Users/vieir/OneDrive/Área de Trabalho/neo-desenvolver-complete/neo-projects-vault/Neo.jpg") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+.workspace, .workspace-leaf, .workspace-leaf-content, .workspace-leaf-border, .workspace-split {
+    background-color: transparent !important;
+}
+.workspace-split.mod-root .view-content, .markdown-preview-view, .markdown-source-view, .editor-container {
+    background-color: transparent !important;
+}
+.side-dock-sidepane, .ribbon fide, .status-bar {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+}
+.status-bar {
+    color: #00FF41 !important;
+}
+::-webkit-scrollbar { width: 8px !important; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3) !important; }
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 65, 0.3) !important;
+    border-radius: 4px !important;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(57, 255, 20, 0.5) !important;
+}
+a {
+    color: #00FF41 !important;
+    text-decoration: none !important;
+}
+a:hover {
+    color: #39FF14 !important;
+    text-shadow: 0 0 5px #00FF41 !important;
+}
+.markdown-preview-view code, .markdown-source-view code {
+    background-color: rgba(0, 255, 65, 0.1) !important;
+    color: #00FF41 !important;
+    border-radius: 3px !important;
+}
+.markdown-preview-view blockquote, .markdown-source-view blockquote {
+    border-left: 2px solid rgba(0, 255, 65, 0.4) !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+.markdown-preview-view table, .markdown-source-view table {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+.markdown-preview-view input[type="checkbox"], .markdown-source-view input[type="checkbox"] {
+    accent-color: #00FF41 !important;
+}
