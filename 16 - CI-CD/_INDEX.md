@@ -1,41 +1,34 @@
-﻿---
+---
 title: "CI-CD"
 category: "16 - CI-CD"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - ci-cd
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 16 — CI-CD
+# 16 — CI/CD
 
 > [!info] Categoria da Knowledge Base
-> Pipelines, GitHub Actions, GitLab CI, deploy contínuo
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Pipelines, GitHub Actions, GitLab CI, deploy contínuo
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Pipelines, GitHub Actions, GitLab CI, deploy contínuo.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[CI-CD - Integracao e Entrega Continua]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] GitHub Actions (guia prático)
+- [ ] Estratégias de deploy: blue-green, canary, rolling
+- [ ] Pipeline as Code por ferramenta
+- [ ] Feature flags e rollback
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[DevOps - Cultura e Praticas]]
+- [[Git - Fundamentos]]
+- [[Testes - Fundamentos e Piramide]]

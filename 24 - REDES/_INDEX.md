@@ -1,10 +1,11 @@
-﻿---
+---
 title: "REDES"
 category: "24 - REDES"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - redes
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,23 @@ updated: "2026-09-03"
 # 24 — REDES
 
 > [!info] Categoria da Knowledge Base
-> TCP/IP, HTTP, DNS, TLS, WebSockets
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-TCP/IP, HTTP, DNS, TLS, WebSockets
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> TCP/IP, HTTP, DNS, TLS, WebSockets.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Redes - TCP-IP, HTTP, DNS e TLS]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] HTTP a fundo (métodos, headers, cache, HTTP/2 e HTTP/3)
+- [ ] Modelo OSI vs TCP/IP
+- [ ] TLS handshake detalhado e certificados
+- [ ] WebSockets e comunicação em tempo real
+- [ ] Load balancing e proxies
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[11 - APIs/_INDEX]]
+- [[19 - SEGURANCA/_INDEX]]
+- [[Sistemas Operacionais - Fundamentos]]

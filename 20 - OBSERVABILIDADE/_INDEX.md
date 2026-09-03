@@ -1,10 +1,11 @@
-﻿---
+---
 title: "OBSERVABILIDADE"
 category: "20 - OBSERVABILIDADE"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - observabilidade
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,23 @@ updated: "2026-09-03"
 # 20 — OBSERVABILIDADE
 
 > [!info] Categoria da Knowledge Base
-> Logs, métricas, tracing, Prometheus, Grafana, OpenTelemetry
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Logs, métricas, tracing, Prometheus, Grafana, OpenTelemetry
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Logs, métricas, tracing, Prometheus, Grafana, OpenTelemetry.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Observabilidade]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] SLI / SLO / SLA e error budget (SRE)
+- [ ] OpenTelemetry (guia)
+- [ ] Prometheus + Grafana (métricas)
+- [ ] Tracing distribuído (Jaeger/Tempo)
+- [ ] Logs estruturados
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[DevOps - Cultura e Praticas]]
+- [[Microsservicos]]
+- [[21 - PERFORMANCE/_INDEX]]

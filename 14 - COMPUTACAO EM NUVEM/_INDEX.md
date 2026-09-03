@@ -1,41 +1,35 @@
-﻿---
+---
 title: "COMPUTACAO EM NUVEM"
 category: "14 - COMPUTACAO EM NUVEM"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - cloud
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 14 — COMPUTACAO EM NUVEM
+# 14 — COMPUTAÇÃO EM NUVEM
 
 > [!info] Categoria da Knowledge Base
-> AWS, Azure, GCP, IaaS/PaaS/SaaS, serverless
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-AWS, Azure, GCP, IaaS/PaaS/SaaS, serverless
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> AWS, Azure, GCP, IaaS/PaaS/SaaS, serverless.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Computacao em Nuvem - Fundamentos]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] AWS / Azure / GCP (visão por provedor)
+- [ ] Serverless / FaaS (aprofundado)
+- [ ] Object storage, managed databases
+- [ ] FinOps (governança de custos)
+- [ ] Well-Architected Framework
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[Kubernetes]]
+- [[Microsservicos]]
+- [[DevOps - Cultura e Praticas]]

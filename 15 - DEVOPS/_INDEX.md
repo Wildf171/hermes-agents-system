@@ -1,10 +1,11 @@
-﻿---
+---
 title: "DEVOPS"
 category: "15 - DEVOPS"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - devops
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,25 @@ updated: "2026-09-03"
 # 15 — DEVOPS
 
 > [!info] Categoria da Knowledge Base
-> Cultura DevOps, IaC, Docker, Kubernetes, automação
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Cultura DevOps, IaC, Docker, Kubernetes, automação
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Cultura DevOps, IaC, Docker, Kubernetes, automação.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[DevOps - Cultura e Praticas]] ✅ verified
+- [[Kubernetes]] ✅ verified
+- [[Docker - Fundamentals]] (migrado; a revisar com fontes)
+
+## Tópicos planejados
+
+- [ ] Infraestrutura como Código (Terraform, Ansible)
+- [ ] SRE (SLO, error budget)
+- [ ] DevSecOps
+- [ ] Docker aprofundado (revisar nota migrada)
+- [ ] GitOps (ArgoCD/Flux)
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[16 - CI-CD/_INDEX]]
+- [[14 - COMPUTACAO EM NUVEM/_INDEX]]
+- [[20 - OBSERVABILIDADE/_INDEX]]
