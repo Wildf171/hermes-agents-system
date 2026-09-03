@@ -1,10 +1,11 @@
-﻿---
+---
 title: "EVENT DRIVEN"
 category: "35 - EVENT DRIVEN"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - event-driven
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,24 @@ updated: "2026-09-03"
 # 35 — EVENT DRIVEN
 
 > [!info] Categoria da Knowledge Base
-> Event-driven architecture, CQRS, Event Sourcing
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Event-driven architecture, CQRS, Event Sourcing
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Event-driven architecture, CQRS, Event Sourcing.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Event-Driven, CQRS e Event Sourcing]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Pub/Sub e padrões de eventos (notification vs state transfer)
+- [ ] CQRS aprofundado (com exemplo)
+- [ ] Event Sourcing: projeções, snapshots, versionamento
+- [ ] Idempotência e entrega at-least-once
+- [ ] Choreography vs Orchestration (Saga)
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[34 - MICROSERVICOS/_INDEX]]
+- [[36 - MENSAGERIA/_INDEX]]
+- [[Domain-Driven Design (DDD)]]
+- [[13 - SISTEMAS DISTRIBUIDOS/_INDEX]]

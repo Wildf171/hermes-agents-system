@@ -1,41 +1,37 @@
-﻿---
+---
 title: "MICROSERVICOS"
 category: "34 - MICROSERVICOS"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - microservicos
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 34 — MICROSERVICOS
+# 34 — MICROSSERVIÇOS
 
 > [!info] Categoria da Knowledge Base
-> Decomposição, comunicação, service mesh, saga
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Decomposição, comunicação, service mesh, saga
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Decomposição, comunicação, service mesh, saga.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Microsservicos]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Monolito vs Microsserviços (comparação dedicada)
+- [ ] Saga Pattern (transações distribuídas)
+- [ ] API Gateway / BFF
+- [ ] Circuit Breaker e resiliência
+- [ ] Service Mesh (Istio)
+- [ ] Database per service
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[Domain-Driven Design (DDD)]]
+- [[35 - EVENT DRIVEN/_INDEX]]
+- [[13 - SISTEMAS DISTRIBUIDOS/_INDEX]]
+- [[15 - DEVOPS/_INDEX]]

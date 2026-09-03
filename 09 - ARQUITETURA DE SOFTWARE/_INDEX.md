@@ -1,10 +1,11 @@
-﻿---
+---
 title: "ARQUITETURA DE SOFTWARE"
 category: "09 - ARQUITETURA DE SOFTWARE"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - arquitetura
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,26 @@ updated: "2026-09-03"
 # 09 — ARQUITETURA DE SOFTWARE
 
 > [!info] Categoria da Knowledge Base
-> Camadas, Clean, Hexagonal, MVC, trade-offs arquiteturais
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Camadas, Clean, Hexagonal, MVC, trade-offs arquiteturais
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Camadas, Clean, Hexagonal, MVC, trade-offs arquiteturais.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Arquitetura de Software - Fundamentos]] ✅ verified
+- [[Clean Architecture]] ✅ verified
+- [[Hexagonal Architecture]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Layered Architecture / MVC / MVVM
+- [ ] Onion Architecture
+- [ ] C4 Model (modelagem)
+- [ ] Atributos de qualidade (NFRs) e Fitness Functions
+- [ ] Big Ball of Mud (anti-pattern)
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
-
-## Fontes
-
-_A registrar durante a pesquisa._
+- [[33 - DDD/_INDEX]]
+- [[34 - MICROSERVICOS/_INDEX]]
+- [[13 - SISTEMAS DISTRIBUIDOS/_INDEX]]
+- [[SOLID Principles]]
