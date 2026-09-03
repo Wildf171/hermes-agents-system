@@ -183,6 +183,9 @@
   },
   "active": "44e2cb8ff7c4f315",
   "lastOpenFiles": [
+    "44 - GLOSSARIO/Glossario - Siglas e Acronimos.md",
+    "44 - GLOSSARIO/Glossario - Siglas e Acronimos.md.tmp.45764.ccf59ce06b28",
+    "44 - GLOSSARIO/Glossario - Termos de Engenharia de Software.md",
     "43 - ANTIPATTERNS/Anti-patterns de Processo e Organizacao.md",
     "43 - ANTIPATTERNS/Anti-patterns de Arquitetura e Design.md",
     "43 - ANTIPATTERNS/Code Smells.md",
@@ -209,8 +212,6 @@
     "19 - SEGURANCA/Criptografia - Hashing, Encryption e Senhas.md",
     "19 - SEGURANCA/JWT (JSON Web Token).md",
     "19 - SEGURANCA/OAuth 2.0 e OpenID Connect.md",
-    "19 - SEGURANCA/Autenticacao vs Autorizacao.md",
-    "19 - SEGURANCA/OWASP Top 10.md",
     "Sem título.canvas",
     "Neo.jpg",
     "14 - COMPUTACAO EM NUVEM/Computacao em Nuvem - Fundamentos.md.tmp.45764.7bbaffb30997",
@@ -220,7 +221,6 @@
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/start-backend.sh",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Specializations",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE",
     "neo-projects-vault/Neo.jpg"
   ]
 }
