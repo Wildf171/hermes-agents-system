@@ -23,12 +23,12 @@ Voltar para [[00 - INDEX]].
 |---|---|
 | Categorias (schema) | 48 |
 | Categorias com esqueleto | 48 / 48 ✅ |
-| Notas de conhecimento reais | em migração/pesquisa |
-| Notas `verified` | poucas (pesquisa não iniciada) |
+| Notas `verified` (pesquisadas c/ fontes) | ~46 |
+| Fases de pesquisa concluídas | 7 / 7 ✅ |
 | Sistema (templates, guias, MOCs) | ✅ |
 | Última atualização | 2026-09-03 |
 
-**Fase atual:** esqueleto pronto → aguardando aprovação para **pesquisa profunda** (começando pelos Fundamentos).
+**Estado:** as 7 fases do plano de pesquisa foram concluídas (Fundamentos → Desenvolvimento → Arquitetura → Infraestrutura → Dados → Segurança → IA). Próximo ciclo: aprofundar tópicos planejados em cada categoria (ver seções "Tópicos planejados" dos `_INDEX`).
 
 ---
 

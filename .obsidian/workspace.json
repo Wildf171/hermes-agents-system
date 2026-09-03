@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "be5ec33f6dfaa6ed",
+        "id": "c6ae75ce30c27f04",
         "type": "tabs",
         "children": [
           {
-            "id": "fbb1ced42079c08f",
+            "id": "44e2cb8ff7c4f315",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -181,8 +181,17 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "fbb1ced42079c08f",
+  "active": "44e2cb8ff7c4f315",
   "lastOpenFiles": [
+    "38 - IA PARA ENGENHARIA DE SOFTWARE/AI Coding Agents.md",
+    "03 - PROCESSOS E METODOLOGIAS/_INDEX.md",
+    "38 - IA PARA ENGENHARIA DE SOFTWARE/MCP - Model Context Protocol.md",
+    "38 - IA PARA ENGENHARIA DE SOFTWARE/MCP - Model Context Protocol.md.tmp.45764.a5dd85770948",
+    "34 - MICROSERVICOS/_INDEX.md",
+    "38 - IA PARA ENGENHARIA DE SOFTWARE/RAG - Retrieval-Augmented Generation.md",
+    "38 - IA PARA ENGENHARIA DE SOFTWARE/RAG - Retrieval-Augmented Generation.md.tmp.45764.b13e8084a7a6",
+    "38 - IA PARA ENGENHARIA DE SOFTWARE/Prompt Engineering.md",
+    "38 - IA PARA ENGENHARIA DE SOFTWARE/LLMs - Fundamentos.md",
     "19 - SEGURANCA/Criptografia - Hashing, Encryption e Senhas.md",
     "19 - SEGURANCA/JWT (JSON Web Token).md",
     "19 - SEGURANCA/OAuth 2.0 e OpenID Connect.md",
@@ -205,13 +214,6 @@
     "25 - SISTEMAS OPERACIONAIS/Sistemas Operacionais - Fundamentos.md",
     "01 - FUNDAMENTOS/SWEBOK - Corpo de Conhecimento.md",
     "13 - SISTEMAS DISTRIBUIDOS/Teorema CAP e Sistemas Distribuidos.md",
-    "35 - EVENT DRIVEN/Event-Driven, CQRS e Event Sourcing.md",
-    "34 - MICROSERVICOS/Microsservicos.md",
-    "33 - DDD/Domain-Driven Design (DDD).md",
-    "09 - ARQUITETURA DE SOFTWARE/Hexagonal Architecture.md",
-    "09 - ARQUITETURA DE SOFTWARE/Clean Architecture.md",
-    "09 - ARQUITETURA DE SOFTWARE/Arquitetura de Software - Fundamentos.md",
-    "29 - REFATORACAO/Refatoracao.md",
     "06 - PROGRAMACAO/Estruturas de Dados.md.tmp.45764.fd425149a082",
     "26 - GIT E VERSIONAMENTO",
     "05 - PRINCÍPIOS DE SOFTWARE",
@@ -219,8 +221,6 @@
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Specializations",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes",
     "38 - IA PARA ENGENHARIA DE SOFTWARE",
-    "03 - PROCESSOS E METODOLOGIAS",
-    "06 - PROGRAMACAO/Java/Resources",
     "neo-projects-vault/Neo.jpg"
   ]
 }

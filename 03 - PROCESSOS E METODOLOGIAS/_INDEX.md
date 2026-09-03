@@ -1,4 +1,4 @@
-﻿---
+---
 title: "PROCESSOS E METODOLOGIAS"
 category: "03 - PROCESSOS E METODOLOGIAS"
 tags:
