@@ -22,17 +22,20 @@ Fundamentos de programação: paradigmas, linguagens específicas, estruturas de
 ## Notas nesta categoria
 
 - [[Paradigmas de Programacao]] ✅ verified
+- [[Orientacao a Objetos]] ✅ verified
+- [[Estruturas de Dados]] ✅ verified
+- [[Complexidade Algoritmica (Big-O)]] ✅ verified
 - [[Python - Fundamentals]] (migrado)
 - `Java/` — curso Java-OOP (migrado)
 - `JavaScript/` — curso JavaScript (migrado)
 
 ## Tópicos planejados
 
-- [ ] Estruturas de Dados (arrays, listas, árvores, grafos, hash) — **próximo**
-- [ ] Algoritmos e Complexidade (Big-O) — **próximo**
-- [ ] Orientação a Objetos (nota aprofundada)
-- [ ] Programação Funcional (imutabilidade, funções puras)
+- [ ] Programação Funcional (imutabilidade, funções puras, HOFs)
+- [ ] Algoritmos clássicos (ordenação, busca, grafos)
+- [ ] Árvores balanceadas, grafos e tries (aprofundamento)
 - [ ] TypeScript, Go, Rust (fundamentos)
+- [ ] Tratamento de erros e exceções
 
 ## Relacionados
 

@@ -22,14 +22,15 @@ Heurísticas e princípios de design que orientam código simples, manutenível 
 ## Notas nesta categoria
 
 - [[DRY, KISS e YAGNI]] ✅ verified
+- [[Coesao e Acoplamento]] ✅ verified
 
 ## Tópicos planejados
 
-- [ ] Coesão e Acoplamento (nota própria)
-- [ ] Separação de Responsabilidades (SoC)
+- [ ] Separação de Responsabilidades (SoC) — nota própria
 - [ ] Princípio da Menor Surpresa (POLA)
-- [ ] Law of Demeter
+- [ ] Law of Demeter (princípio do menor conhecimento)
 - [ ] Composição sobre herança
+- [ ] Fail-fast e defensive programming
 
 ## Relacionados
 
