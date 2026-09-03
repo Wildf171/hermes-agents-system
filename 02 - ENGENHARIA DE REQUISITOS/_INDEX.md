@@ -1,10 +1,11 @@
-﻿---
+---
 title: "ENGENHARIA DE REQUISITOS"
 category: "02 - ENGENHARIA DE REQUISITOS"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - requisitos
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,32 @@ updated: "2026-09-03"
 # 02 — ENGENHARIA DE REQUISITOS
 
 > [!info] Categoria da Knowledge Base
-> Elicitação, análise, especificação, validação, rastreabilidade
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Elicitação, análise, especificação, validação, rastreabilidade
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Elicitação, análise, especificação, validação, rastreabilidade.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Engenharia de Requisitos - Fundamentos]] ✅ verified
+- [[Elicitacao de Requisitos]] ✅ verified
+- [[User Stories, Casos de Uso e Criterios de Aceite]] ✅ verified
+- [[Requisitos Nao Funcionais]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] MoSCoW e técnicas de priorização
+- [ ] Rastreabilidade de requisitos
+- [ ] SRS / IEEE 29148
+- [ ] BDD / Gherkin (aprofundar)
+- [ ] Event Storming
+- [ ] Personas e Jobs To Be Done
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[SDLC - Ciclo de Vida do Software]]
+- [[03 - PROCESSOS E METODOLOGIAS/_INDEX]]
+- [[04 - MODELAGEM/_INDEX]]
+- [[Qualidade de Software - Fundamentos]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
