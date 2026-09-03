@@ -1,41 +1,37 @@
-﻿---
+---
 title: "REFERENCIAS"
 category: "48 - REFERENCIAS"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - referencias
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 48 — REFERENCIAS
+# 48 — REFERÊNCIAS
 
 > [!info] Categoria da Knowledge Base
-> Livros, papers, sites, autores, links canônicos
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Livros, papers, sites, autores, links canônicos
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Livros, papers, sites, autores, links canônicos.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Referencias - Livros Essenciais]] ✅ verified (por área)
+- [[Referencias - Papers e Sites Canonicos]] ✅ verified (papers, RFCs/ISO, docs oficiais)
+
+## Tópicos planejados
+
+- [ ] Cursos e trilhas recomendadas
+- [ ] Canais/blogs/newsletters de referência
+- [ ] Ferramentas de estudo (playgrounds, katas)
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[44 - GLOSSARIO/_INDEX]]
+- [[SWEBOK - Corpo de Conhecimento]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
