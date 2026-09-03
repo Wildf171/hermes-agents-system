@@ -1,41 +1,43 @@
-﻿---
+---
 title: "CONCORRENCIA"
 category: "23 - CONCORRENCIA"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - concorrencia
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 23 — CONCORRENCIA
+# 23 — CONCORRÊNCIA
 
 > [!info] Categoria da Knowledge Base
-> Threads, async, locks, race conditions, paralelismo
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Threads, async, locks, race conditions, paralelismo
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Threads, async, locks, race conditions, paralelismo.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Concorrencia - Fundamentos]] ✅ verified
+- [[Race Conditions e Sincronizacao]] ✅ verified
+- [[Deadlock, Starvation e Livelock]] ✅ verified
+- [[Programacao Assincrona e Modelos de Concorrencia]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Memory model e visibilidade (happens-before)
+- [ ] Lock-free / CAS (compare-and-swap)
+- [ ] Structured concurrency
+- [ ] Backpressure em streams reativas
+- [ ] Actor model / CSP aprofundados (Erlang, Go)
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Sistemas Operacionais - Fundamentos]]
+- [[Transacoes e ACID]]
+- [[21 - PERFORMANCE/_INDEX]]
+- [[Paradigmas de Programacao]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.

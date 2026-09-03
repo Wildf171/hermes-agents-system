@@ -183,6 +183,12 @@
   },
   "active": "44e2cb8ff7c4f315",
   "lastOpenFiles": [
+    "23 - CONCORRENCIA/Programacao Assincrona e Modelos de Concorrencia.md",
+    "23 - CONCORRENCIA/Programacao Assincrona e Modelos de Concorrencia.md.tmp.45764.d3502546c55d",
+    "23 - CONCORRENCIA/Deadlock, Starvation e Livelock.md",
+    "23 - CONCORRENCIA/Race Conditions e Sincronizacao.md",
+    "00 - SYSTEM/_Dashboard.md",
+    "23 - CONCORRENCIA/Concorrencia - Fundamentos.md",
     "21 - PERFORMANCE/Performance Web.md",
     "21 - PERFORMANCE/Profiling e Otimizacao.md",
     "21 - PERFORMANCE/Profiling e Otimizacao.md.tmp.45764.4d272b3b66fc",
@@ -206,12 +212,7 @@
     "11 - APIs/gRPC.md",
     "11 - APIs/GraphQL.md",
     "11 - APIs/APIs REST - Fundamentos e Design.md",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE/AI Coding Agents.md",
-    "03 - PROCESSOS E METODOLOGIAS/_INDEX.md",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE/MCP - Model Context Protocol.md",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/MCP - Model Context Protocol.md.tmp.45764.a5dd85770948",
-    "34 - MICROSERVICOS/_INDEX.md",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE/RAG - Retrieval-Augmented Generation.md",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/RAG - Retrieval-Augmented Generation.md.tmp.45764.b13e8084a7a6",
     "Sem título.canvas",
     "Neo.jpg",
@@ -220,7 +221,6 @@
     "26 - GIT E VERSIONAMENTO",
     "05 - PRINCÍPIOS DE SOFTWARE",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/start-backend.sh",
-    "38 - IA PARA ENGENHARIA DE SOFTWARE/Hermes/Specializations",
     "neo-projects-vault/Neo.jpg"
   ]
 }
