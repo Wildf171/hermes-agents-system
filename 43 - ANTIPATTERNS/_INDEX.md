@@ -1,41 +1,43 @@
-﻿---
+---
 title: "ANTIPATTERNS"
 category: "43 - ANTIPATTERNS"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - antipatterns
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 43 — ANTIPATTERNS
+# 43 — ANTI-PATTERNS
 
 > [!info] Categoria da Knowledge Base
-> Anti-padrões de código, arquitetura e processo
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Anti-padrões de código, arquitetura e processo
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Anti-padrões de código, arquitetura e processo.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Anti-patterns - Fundamentos]] ✅ verified
+- [[Code Smells]] ✅ verified
+- [[Anti-patterns de Arquitetura e Design]] ✅ verified
+- [[Anti-patterns de Processo e Organizacao]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Nota por anti-pattern (God Object, Big Ball of Mud, Golden Hammer…)
+- [ ] Lei de Conway / Inverse Conway (nota própria)
+- [ ] Catálogo de code smells → refatoração (tabela)
+- [ ] Cargo Cult Agile / Water-Scrum-Fall
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Refatoracao]]
+- [[Clean Code]]
+- [[SOLID Principles]]
+- [[05 - PRINCÍPIOS DE SOFTWARE/_INDEX]]
+- [[Arquitetura de Software - Fundamentos]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
