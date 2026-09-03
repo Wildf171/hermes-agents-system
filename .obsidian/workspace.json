@@ -11,10 +11,14 @@
             "id": "44e2cb8ff7c4f315",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Visualização em gráfico"
+              "type": "markdown",
+              "state": {
+                "file": "38 - IA PARA ENGENHARIA DE SOFTWARE/AI Agents - Introduction.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AI Agents - Introduction"
             }
           }
         ]
@@ -183,6 +187,11 @@
   },
   "active": "44e2cb8ff7c4f315",
   "lastOpenFiles": [
+    "38 - IA PARA ENGENHARIA DE SOFTWARE/_README.md",
+    "04 - MODELAGEM/Diagrama Entidade-Relacionamento (ER).md",
+    "04 - MODELAGEM/C4 Model.md",
+    "04 - MODELAGEM/UML - Diagramas Essenciais.md",
+    "04 - MODELAGEM/Modelagem de Software - Fundamentos.md",
     "02 - ENGENHARIA DE REQUISITOS/Requisitos Nao Funcionais.md",
     "02 - ENGENHARIA DE REQUISITOS/User Stories, Casos de Uso e Criterios de Aceite.md",
     "02 - ENGENHARIA DE REQUISITOS/Elicitacao de Requisitos.md",
@@ -207,11 +216,6 @@
     "44 - GLOSSARIO/Glossario - Siglas e Acronimos.md.tmp.45764.ccf59ce06b28",
     "44 - GLOSSARIO/Glossario - Termos de Engenharia de Software.md",
     "43 - ANTIPATTERNS/Anti-patterns de Processo e Organizacao.md",
-    "43 - ANTIPATTERNS/Anti-patterns de Arquitetura e Design.md",
-    "43 - ANTIPATTERNS/Code Smells.md",
-    "43 - ANTIPATTERNS/Anti-patterns - Fundamentos.md",
-    "36 - MENSAGERIA/Padroes de Mensageria e Garantias de Entrega.md",
-    "36 - MENSAGERIA/Kafka vs RabbitMQ.md",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/MCP - Model Context Protocol.md.tmp.45764.a5dd85770948",
     "38 - IA PARA ENGENHARIA DE SOFTWARE/RAG - Retrieval-Augmented Generation.md.tmp.45764.b13e8084a7a6",
     "Sem título.canvas",

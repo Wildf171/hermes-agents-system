@@ -1,10 +1,11 @@
-﻿---
+---
 title: "MODELAGEM"
 category: "04 - MODELAGEM"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - modelagem
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,31 @@ updated: "2026-09-03"
 # 04 — MODELAGEM
 
 > [!info] Categoria da Knowledge Base
-> UML, C4, ER, BPMN, modelagem de domínio
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-UML, C4, ER, BPMN, modelagem de domínio
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> UML, C4, ER, BPMN, modelagem de domínio.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Modelagem de Software - Fundamentos]] ✅ verified
+- [[UML - Diagramas Essenciais]] ✅ verified
+- [[C4 Model]] ✅ verified
+- [[Diagrama Entidade-Relacionamento (ER)]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] BPMN (modelagem de processos de negócio)
+- [ ] 4+1 Architectural View Model
+- [ ] Diagrama de sequência e de estados (aprofundar)
+- [ ] Event Storming (liga a DDD)
+- [ ] Diagramas como código: Mermaid, PlantUML, Structurizr
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Arquitetura de Software - Fundamentos]]
+- [[Domain-Driven Design (DDD)]]
+- [[Modelagem de Dados e Normalizacao]]
+- [[02 - ENGENHARIA DE REQUISITOS/_INDEX]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
