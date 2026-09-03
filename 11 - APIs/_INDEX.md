@@ -1,10 +1,11 @@
-﻿---
+---
 title: "APIs"
 category: "11 - APIs"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - api
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,33 @@ updated: "2026-09-03"
 # 11 — APIs
 
 > [!info] Categoria da Knowledge Base
-> REST, GraphQL, gRPC, versionamento, design, OpenAPI
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-REST, GraphQL, gRPC, versionamento, design, OpenAPI
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> REST, GraphQL, gRPC, versionamento, design, OpenAPI.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[APIs REST - Fundamentos e Design]] ✅ verified
+- [[GraphQL]] ✅ verified
+- [[gRPC]] ✅ verified
+- [[REST vs GraphQL vs gRPC]] ✅ verified
+- [[Boas Praticas de API]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Status HTTP em detalhe (nota própria)
+- [ ] OpenAPI/Swagger (guia prático)
+- [ ] OWASP API Security Top 10
+- [ ] Webhooks e APIs orientadas a eventos
+- [ ] Richardson Maturity Model / HATEOAS
+- [ ] Protocol Buffers a fundo
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Redes - TCP-IP, HTTP, DNS e TLS]]
+- [[19 - SEGURANCA/_INDEX|Segurança]]
+- [[Microsservicos]]
+- [[FastAPI - Introduction]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
