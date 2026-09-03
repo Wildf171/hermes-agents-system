@@ -1,10 +1,11 @@
-﻿---
+---
 title: "MENSAGERIA"
 category: "36 - MENSAGERIA"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - mensageria
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,33 @@ updated: "2026-09-03"
 # 36 — MENSAGERIA
 
 > [!info] Categoria da Knowledge Base
-> Kafka, RabbitMQ, filas, pub/sub, streaming
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Kafka, RabbitMQ, filas, pub/sub, streaming
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Kafka, RabbitMQ, filas, pub/sub, streaming.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Mensageria - Fundamentos]] ✅ verified
+- [[Apache Kafka]] ✅ verified
+- [[RabbitMQ]] ✅ verified
+- [[Kafka vs RabbitMQ]] ✅ verified
+- [[Padroes de Mensageria e Garantias de Entrega]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Saga: coreografia vs orquestração (nota própria)
+- [ ] Outbox Pattern + CDC (Debezium)
+- [ ] Exactly-once no Kafka (transações)
+- [ ] Amazon SQS/SNS e brokers gerenciados
+- [ ] Schema Registry (Avro/Protobuf)
+- [ ] Kafka Streams / ksqlDB
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Event-Driven, CQRS e Event Sourcing]]
+- [[Microsservicos]]
+- [[13 - SISTEMAS DISTRIBUIDOS/_INDEX]]
+- [[37 - ENGENHARIA DE DADOS/_INDEX]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
