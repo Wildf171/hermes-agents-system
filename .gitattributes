@@ -1,0 +1,6 @@
+# Normaliza finais de linha automaticamente (evita avisos LF/CRLF)
+* text=auto
+*.md text
+*.png binary
+*.jpg binary
+*.base binary
