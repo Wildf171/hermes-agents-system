@@ -1,10 +1,11 @@
-﻿---
+---
 title: "PERFORMANCE"
 category: "21 - PERFORMANCE"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - performance
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,31 @@ updated: "2026-09-03"
 # 21 — PERFORMANCE
 
 > [!info] Categoria da Knowledge Base
-> Profiling, otimização, caching, latência, throughput
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Profiling, otimização, caching, latência, throughput
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Profiling, otimização, caching, latência, throughput.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Performance - Fundamentos]] ✅ verified
+- [[Profiling e Otimizacao]] ✅ verified
+- [[Performance Web]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Método USE / RED (nota própria)
+- [ ] Load testing (k6, JMeter, Locust)
+- [ ] GC tuning e memória
+- [ ] Tail latency em sistemas distribuídos
+- [ ] Rendering strategies (SSR/SSG/ISR) aprofundado
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Cache e Redis]]
+- [[Indices e Otimizacao de Queries]]
+- [[Complexidade Algoritmica (Big-O)]]
+- [[22 - ESCALABILIDADE/_INDEX]]
+- [[Observabilidade]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
