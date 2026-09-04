@@ -1,10 +1,11 @@
-﻿---
+---
 title: "TROUBLESHOOTING"
 category: "42 - TROUBLESHOOTING"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - troubleshooting
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,31 @@ updated: "2026-09-03"
 # 42 — TROUBLESHOOTING
 
 > [!info] Categoria da Knowledge Base
-> Diagnóstico, debugging, resolução de problemas reais
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Diagnóstico, debugging, resolução de problemas reais
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Diagnóstico, debugging, resolução de problemas reais.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Troubleshooting - Metodo e Fundamentos]] ✅ verified
+- [[Tecnicas de Debugging]] ✅ verified
+- [[Diagnostico em Producao e Postmortems]] ✅ verified
+- [[Catalogo de Problemas Comuns]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] 5 Whys e RCA formal (Ishikawa)
+- [ ] Runbooks e on-call
+- [ ] Chaos engineering
+- [ ] Debugging de concorrência
+- [ ] Mais casos no catálogo (por linguagem/stack)
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Observabilidade]]
+- [[Performance - Fundamentos]]
+- [[DevOps - Cultura e Praticas]]
+- [[Testes - Fundamentos e Piramide]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
