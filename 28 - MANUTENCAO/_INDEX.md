@@ -1,41 +1,41 @@
-﻿---
+---
 title: "MANUTENCAO"
 category: "28 - MANUTENCAO"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - manutencao
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
 
-# 28 — MANUTENCAO
+# 28 — MANUTENÇÃO
 
 > [!info] Categoria da Knowledge Base
-> Manutenção corretiva/evolutiva, sustentação
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Manutenção corretiva/evolutiva, sustentação
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Manutenção corretiva/evolutiva, sustentação.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Manutencao de Software - Fundamentos]] ✅ verified (4 tipos, ISO 14764)
+- [[Evolucao de Software e Leis de Lehman]] ✅ verified
+- [[Versionamento Semantico e Gestao de Dependencias]] ✅ verified
+
+## Tópicos planejados
+
+- [ ] Processo de manutenção (ISO/IEC 14764)
+- [ ] SBOM e supply chain security
+- [ ] Estratégias de deprecação de API
+- [ ] Estimativa de custo de manutenção
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Refatoracao]] · [[Sistemas Legados - Fundamentos]]
+- [[Metricas de Qualidade e Divida Tecnica]]
+- [[Qualidade de Software - Fundamentos]]
+- [[Boas Praticas de API]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.

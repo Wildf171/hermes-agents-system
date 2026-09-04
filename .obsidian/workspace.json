@@ -11,10 +11,14 @@
             "id": "44e2cb8ff7c4f315",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Visualização em gráfico"
+              "type": "markdown",
+              "state": {
+                "file": "00 - SYSTEM/_old-dashboards/Overview.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Overview"
             }
           }
         ]
@@ -183,6 +187,10 @@
   },
   "active": "44e2cb8ff7c4f315",
   "lastOpenFiles": [
+    "16 - CI-CD/_INDEX.md",
+    "28 - MANUTENCAO/Versionamento Semantico e Gestao de Dependencias.md",
+    "28 - MANUTENCAO/Evolucao de Software e Leis de Lehman.md",
+    "28 - MANUTENCAO/Manutencao de Software - Fundamentos.md",
     "30 - LEGACY SYSTEMS/Estrategias de Modernizacao.md",
     "30 - LEGACY SYSTEMS/Trabalhando com Codigo Legado.md",
     "30 - LEGACY SYSTEMS/Sistemas Legados - Fundamentos.md",
@@ -205,10 +213,6 @@
     "04 - MODELAGEM/UML - Diagramas Essenciais.md",
     "04 - MODELAGEM/Modelagem de Software - Fundamentos.md",
     "02 - ENGENHARIA DE REQUISITOS/Requisitos Nao Funcionais.md",
-    "02 - ENGENHARIA DE REQUISITOS/User Stories, Casos de Uso e Criterios de Aceite.md",
-    "02 - ENGENHARIA DE REQUISITOS/Elicitacao de Requisitos.md",
-    "02 - ENGENHARIA DE REQUISITOS/Engenharia de Requisitos - Fundamentos.md",
-    "18 - QUALIDADE DE SOFTWARE/Analise Estatica de Codigo.md",
     "23 - CONCORRENCIA/Programacao Assincrona e Modelos de Concorrencia.md.tmp.45764.d3502546c55d",
     "21 - PERFORMANCE/Profiling e Otimizacao.md.tmp.45764.4d272b3b66fc",
     "44 - GLOSSARIO/Glossario - Siglas e Acronimos.md.tmp.45764.ccf59ce06b28",
