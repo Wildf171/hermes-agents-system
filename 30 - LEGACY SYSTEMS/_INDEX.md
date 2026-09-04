@@ -1,10 +1,11 @@
-﻿---
+---
 title: "LEGACY SYSTEMS"
 category: "30 - LEGACY SYSTEMS"
 tags:
   - engenharia-software
   - moc
-status: "idea"
+  - legacy
+status: "research"
 created: "2026-09-03"
 updated: "2026-09-03"
 ---
@@ -12,30 +13,30 @@ updated: "2026-09-03"
 # 30 — LEGACY SYSTEMS
 
 > [!info] Categoria da Knowledge Base
-> Sistemas legados, strangler fig, modernização
-
-Este é o índice desta categoria. Cada conceito vira uma nota própria, ligada aqui.
-
-## Escopo
-
-Sistemas legados, strangler fig, modernização
-
-## Tópicos planejados
-
-- [ ] A pesquisar (Fase de pesquisa)
-- [ ] Comparações relevantes
-- [ ] Boas práticas e anti-patterns
-- [ ] Exemplos práticos
+> Sistemas legados, strangler fig, modernização.
 
 ## Notas nesta categoria
 
-_(ainda vazia — status: idea)_
+- [[Sistemas Legados - Fundamentos]] ✅ verified
+- [[Trabalhando com Codigo Legado]] ✅ verified (Feathers)
+- [[Estrategias de Modernizacao]] ✅ verified (Strangler Fig)
+
+## Tópicos planejados
+
+- [ ] Técnicas de quebra de dependência (catálogo Feathers)
+- [ ] Branch by Abstraction (nota própria)
+- [ ] Anti-Corruption Layer (DDD) aprofundado
+- [ ] Os 7 Rs de modernização de aplicações
+- [ ] Migração de banco de dados legado
 
 ## Relacionados
 
 - [[00 - INDEX]]
-- [[Knowledge Base Dashboard]]
+- [[Refatoracao]] · [[Code Smells]]
+- [[28 - MANUTENCAO/_INDEX|Manutenção]]
+- [[Testes - Fundamentos e Piramide]]
+- [[Microsservicos]] · [[Domain-Driven Design (DDD)]]
 
 ## Fontes
 
-_A registrar durante a pesquisa._
+Ver seção "Fontes" de cada nota.
