@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo Currículos - API Test Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            color: white;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .endpoint {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #333;
+            border-left: 4px solid #667eea;
+        }
+        .method {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 0.85em;
+        }
+        .get { background: #61affe; color: white; }
+        .post { background: #49cc90; color: white; }
+        .delete { background: #f93e3e; color: white; }
+        .put { background: #fca130; color: white; }
+
+        .status-box {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #49cc90;
+        }
+        .status-box.success {
+            border-left-color: #49cc90;
+            background: #f0fff4;
+        }
+        .status-box.error {
+            border-left-color: #f93e3e;
+            background: #fff5f5;
+        }
+        .status-box.info {
+            border-left-color: #667eea;
+            background: #f0f4ff;
+        }
+        .status-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .badge-ok {
+            background: #49cc90;
+            color: white;
+        }
+        .badge-error {
+            background: #f93e3e;
+            color: white;
+        }
+        .test-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        .test-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        .test-btn:active {
+            transform: translateY(0);
+        }
+        .response {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .response.success {
+            border-left: 4px solid #49cc90;
+        }
+        .response.error {
+            border-left: 4px solid #f93e3e;
+        }
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .services {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .service {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .service h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .service p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .service .status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .service .status.ok {
+            background: #49cc90;
+        }
+        .service .status.error {
+            background: #f93e3e;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .services {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Neo Currículos API</h1>
+            <p>Test Panel - API v1.0.0</p>
+        </div>
+
+        <div class="services">
+            <div class="service">
+                <h3>Backend API</h3>
+                <p>localhost:5000</p>
+                <div id="status-api"><span class="status error"></span> Verificando...</div>
+            </div>
+            <div class="service">
+                <h3>MongoDB</h3>
+                <p>localhost:27017</p>
+                <div id="status-mongo"><span class="status error"></span> Verificando...</div>
+            </div>
+            <div class="service">
+                <h3>MinIO Storage</h3>
+                <p>localhost:9000</p>
+                <div id="status-minio"><span class="status error"></span> Verificando...</div>
+            </div>
+            <div class="service">
+                <h3>Redis Cache</h3>
+                <p>localhost:6379</p>
+                <div id="status-redis"><span class="status error"></span> Verificando...</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- HEALTH CHECK -->
+            <div class="card">
+                <h2>🏥 Health Check</h2>
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <code>/health</code>
+                </div>
+                <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                    Verifica se a API está rodando
+                </p>
+                <button class="test-btn" onclick="testHealth()">Testar</button>
+                <div id="response-health"></div>
+            </div>
+
+            <!-- REGISTRO -->
+            <div class="card">
+                <h2>📝 Registrar Candidato</h2>
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <code>/api/auth/registrar</code>
+                </div>
+                <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                    Criar nova conta de candidato
+                </p>
+                <button class="test-btn" onclick="testRegister()">Testar</button>
+                <div id="response-register"></div>
+            </div>
+
+            <!-- LOGIN -->
+            <div class="card">
+                <h2>🔐 Login</h2>
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <code>/api/auth/login</code>
+                </div>
+                <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                    Autenticar com email e senha
+                </p>
+                <button class="test-btn" onclick="testLogin()">Testar</button>
+                <div id="response-login"></div>
+            </div>
+
+            <!-- LISTAGEM DE CURRÍCULOS -->
+            <div class="card">
+                <h2>📄 Listar Currículos</h2>
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <code>/api/candidatos/:id/curriculos</code>
+                </div>
+                <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                    Listar todas as versões de CV
+                </p>
+                <button class="test-btn" onclick="testListCVs()">Testar</button>
+                <div id="response-list-cvs"></div>
+            </div>
+
+            <!-- BUSCA -->
+            <div class="card">
+                <h2>🔍 Buscar Currículos</h2>
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <code>/api/curriculos/busca</code>
+                </div>
+                <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                    Buscar CVs com filtros
+                </p>
+                <button class="test-btn" onclick="testSearch()">Testar</button>
+                <div id="response-search"></div>
+            </div>
+
+            <!-- AUDITORIA -->
+            <div class="card">
+                <h2>📊 Relatório LGPD</h2>
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <code>/api/auditoria/relatorio</code>
+                </div>
+                <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                    Relatório de acessos LGPD (admin)
+                </p>
+                <button class="test-btn" onclick="testAudit()">Testar</button>
+                <div id="response-audit"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+
+        async function checkServices() {
+            // Verificar cada serviço
+            checkService('api', `${API_URL}/health`, 'status-api');
+            checkService('mongo', `http://localhost:27017`, 'status-mongo');
+            checkService('minio', `http://localhost:9000/minio/health/live`, 'status-minio');
+            checkService('redis', `http://localhost:6379`, 'status-redis');
+        }
+
+        async function checkService(name, url, elementId) {
+            try {
+                const response = await fetch(url, {
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    timeout: 5000
+                });
+                updateStatus(elementId, true);
+            } catch (e) {
+                // Try com GET se HEAD falhar
+                try {
+                    const response = await fetch(url, {
+                        mode: 'no-cors',
+                        timeout: 5000
+                    });
+                    updateStatus(elementId, true);
+                } catch (e2) {
+                    updateStatus(elementId, false);
+                }
+            }
+        }
+
+        function updateStatus(elementId, isOk) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.innerHTML = `<span class="status ${isOk ? 'ok' : 'error'}"></span> ${isOk ? 'Online' : 'Offline'}`;
+            }
+        }
+
+        async function apiCall(endpoint, method = 'GET', body = null, responseId) {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.classList.add('loading');
+            btn.innerHTML = '<span class="spinner">⟳</span> Testando...';
+
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+                if (body) options.body = JSON.stringify(body);
+
+                const response = await fetch(`${API_URL}${endpoint}`, options);
+                const data = await response.json();
+
+                showResponse(responseId, data, response.status, response.status < 400);
+            } catch (error) {
+                showResponse(responseId, { error: error.message }, 0, false);
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                btn.innerHTML = 'Testar';
+            }
+        }
+
+        function showResponse(id, data, status, success) {
+            const el = document.getElementById(id);
+            const statusClass = success ? 'success' : 'error';
+            const statusBadge = success ? '✓ OK' : '✗ Erro';
+
+            el.innerHTML = `
+                <div class="response ${statusClass}">
+Status: ${status || 'Error'}<br><br>
+${JSON.stringify(data, null, 2)}
+                </div>
+            `;
+        }
+
+        // Test functions
+        function testHealth() {
+            apiCall('/health', 'GET', null, 'response-health');
+        }
+
+        function testRegister() {
+            const body = {
+                email: `teste${Date.now()}@teste.com`,
+                senha: 'Senha123!',
+                nome: 'João Silva Test'
+            };
+            apiCall('/api/auth/registrar', 'POST', body, 'response-register');
+        }
+
+        function testLogin() {
+            const body = {
+                email: 'teste@teste.com',
+                senha: 'Senha123!'
+            };
+            apiCall('/api/auth/login', 'POST', body, 'response-login');
+        }
+
+        function testListCVs() {
+            // Usar um ID de teste
+            apiCall('/api/candidatos/507f1f77bcf86cd799439011/curriculos', 'GET', null, 'response-list-cvs');
+        }
+
+        function testSearch() {
+            apiCall('/api/curriculos/busca?limit=10&offset=0', 'GET', null, 'response-search');
+        }
+
+        function testAudit() {
+            apiCall('/api/auditoria/relatorio', 'GET', null, 'response-audit');
+        }
+
+        // Check services on load
+        window.addEventListener('load', checkServices);
+        // Recheck every 30 seconds
+        setInterval(checkServices, 30000);
+    </script>
+</body>
+</html>
