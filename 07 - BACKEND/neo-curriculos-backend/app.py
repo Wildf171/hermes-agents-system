@@ -20,6 +20,7 @@ Version: 1.0.0
 
 import os
 import logging
+import importlib
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -140,7 +141,6 @@ def create_app():
         logger.info("MongoDB conectado com sucesso")
 
         # Inicializar índices
-        import importlib
         models_module = importlib.import_module('models.06_MODELS_MONGODB')
         models_module.setup_database(app.db)
 
