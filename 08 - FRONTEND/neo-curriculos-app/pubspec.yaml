@@ -1,0 +1,83 @@
+name: neo_curriculos_app
+description: Aplicativo Flutter para envio de currículos - Neo Currículos Platform
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+  flutter: '>=3.16.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ============== HTTP & API ==============
+  dio: ^5.3.0
+  pretty_dio_logger: ^1.3.1
+
+  # ============== STATE MANAGEMENT ==============
+  provider: ^6.0.0
+
+  # ============== STORAGE ==============
+  shared_preferences: ^2.2.0
+  flutter_secure_storage: ^9.0.0
+
+  # ============== FILE HANDLING ==============
+  file_picker: ^5.3.0
+  permission_handler: ^11.4.0
+
+  # ============== PDF RENDERING ==============
+  pdfx: ^2.5.0
+
+  # ============== UI COMPONENTS ==============
+  flutter_svg: ^2.0.0
+  google_fonts: ^6.1.0
+  intl: ^0.19.0
+
+  # ============== FORM VALIDATION ==============
+  formz: ^0.5.0
+
+  # ============== LOGGING ==============
+  logger: ^2.0.0
+
+  # ============== CONNECTIVITY ==============
+  connectivity_plus: ^5.0.0
+
+  # ============== ERROR HANDLING ==============
+  fimber: ^0.7.1
+
+  # ============== MISC ==============
+  equatable: ^2.0.5
+  get_it: ^7.6.0
+  url_launcher: ^6.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  mockito: ^5.4.0
+  mocktail: ^1.0.0
+  build_runner: ^2.4.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animations/
+    - .env.dev
+    - .env.prod
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600

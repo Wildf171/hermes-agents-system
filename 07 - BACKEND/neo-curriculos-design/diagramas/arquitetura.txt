@@ -1,0 +1,254 @@
+================================================================================
+                   ARQUITETURA UNIFICADA: NEO CURRÍCULOS + NEO RH
+================================================================================
+
+CLIENTES
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  Web RH System (Navegador)      │     Flutter App (iOS/Android)    │
+│  ├─ Admin Panel                 │     ├─ Registro                 │
+│  ├─ Dashboard                   │     ├─ Envio de CV              │
+│  ├─ Gestão de Candidatos        │     ├─ Perfil Completo          │
+│  ├─ Gestão de Vagas             │     └─ Consentimento LGPD       │
+│  └─ Auditoria                   │                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+           ▲                                   ▲
+           │                                   │
+           │ HTTPS JWT                        │ HTTPS JWT
+           │ (RH/Recruiter/Admin)            │ (Candidato)
+           │                                   │
+           ▼                                   ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│                      API FLASK UNIFICADA                                 │
+│                     (mesmo serviço, novos endpoints)                     │
+│                                                                          │
+│  Compartilhado:                                                         │
+│  ├─ POST /api/auth/login                                               │
+│  ├─ POST /api/auth/refresh                                             │
+│  ├─ POST /api/auth/logout                                              │
+│  └─ POST /api/auth/registrar (NOVO - para candidatos)                  │
+│                                                                          │
+│  RH/Recruiter (Existente):                                              │
+│  ├─ GET /api/candidatos                                                 │
+│  ├─ GET /api/candidatos/:id                                             │
+│  ├─ GET /api/vagas                                                      │
+│  ├─ POST /api/vagas/:id/aplicar                                         │
+│  └─ GET /api/auditoria                                                  │
+│                                                                          │
+│  Candidato (NOVO):                                                      │
+│  ├─ POST /api/curriculos/upload         ← Upload CV                    │
+│  ├─ GET /api/curriculos                 ← Histórico de CVs             │
+│  ├─ PATCH /api/candidatos/:id/consentimento ← LGPD                     │
+│  ├─ DELETE /api/candidatos/:id/deletar-conta ← Direito ao Esquecimento │
+│  └─ GET /api/candidatos/:id/perfil-completo                            │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+           ▼                    ▼                      ▼
+┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│ MONGODB          │    │ STORAGE S3/MinIO │    │ REDIS (Sessions) │
+│ (Compartilhado)  │    │                  │    │                  │
+│                  │    │ /curriculos/     │    │ JWT tokens       │
+│ ├─ usuarios      │    │ /perfis/         │    │ Rate limiting    │
+│ ├─ candidatos    │    │ /uploads/        │    └──────────────────┘
+│ ├─ empresas      │    │                  │
+│ ├─ vagas         │    │ Permissões:      │
+│ ├─ curriculos    │    │ ├─ Público (R)   │
+│ ├─ curriculos_   │    │ └─ Auth (RW)     │
+│ │  acesso        │    │                  │
+│ ├─ auditoria     │    │ Replicação S3:   │
+│ └─ config        │    │ ├─ Cross-region  │
+│                  │    │ └─ Versioning    │
+└──────────────────┘    └──────────────────┘
+
+INFRAESTRUTURA
+┌──────────────────────────────────────────────────────────────────────────┐
+│                                                                          │
+│  ┌─────────────────────┐           ┌──────────────────────────┐         │
+│  │  CloudFront / CDN   │           │  Nginx Reverse Proxy    │         │
+│  │  (Cache static)     │──────────▶│  (HTTPS, rate limit)   │         │
+│  └─────────────────────┘           └──────────────────────────┘         │
+│                                               │                         │
+│                                               ▼                         │
+│  ┌──────────────────────────────────────────────────────────────┐      │
+│  │  Flask App (Gunicorn - múltiplas instâncias)                │      │
+│  │  ├─ 4x workers                                              │      │
+│  │  ├─ Health checks                                           │      │
+│  │  └─ Auto-restart on crash                                  │      │
+│  └──────────────────────────────────────────────────────────────┘      │
+│                                                                          │
+│  Logging & Monitoring:                                                  │
+│  ├─ ELK Stack (Elasticsearch/Logstash/Kibana)                         │
+│  ├─ Prometheus (métricas)                                              │
+│  ├─ Grafana (dashboards)                                               │
+│  └─ Sentry (error tracking)                                            │
+│                                                                          │
+│  Database:                                                              │
+│  ├─ MongoDB Atlas (Cloud)                                              │
+│  │  ├─ Auto-backup daily                                              │
+│  │  ├─ Point-in-time recovery                                         │
+│  │  └─ Cross-region replica (opcional)                               │
+│  └─ Local development (Docker container)                               │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+
+FLUXO DE DADOS: Candidato Envia CV → RH Acessa
+┌──────────────────────────────────────────────────────────────────────────┐
+│                                                                          │
+│  1. CANDIDATO REGISTRA                                                  │
+│     ╔════════════════════════════════════════════╗                     │
+│     ║ App Flutter                                ║                     │
+│     ║ POST /api/auth/registrar                   ║                     │
+│     ║ { email, nome, senha }                     ║                     │
+│     ╚════════════════════════════════════════════╝                     │
+│               ▼                                                          │
+│     ┌───────────────────────────────────────────┐                      │
+│     │ db.usuarios (novo)                        │                      │
+│     │ {                                         │                      │
+│     │   tipo: "candidato"                       │                      │
+│     │   eh_candidato: true                      │                      │
+│     │   permissoes: ["enviar_cv", ...]          │                      │
+│     │ }                                         │                      │
+│     └───────────────────────────────────────────┘                      │
+│               ▼                                                          │
+│     ┌───────────────────────────────────────────┐                      │
+│     │ JWT Token (24h)                           │                      │
+│     │ {access_token, refresh_token}             │                      │
+│     └───────────────────────────────────────────┘                      │
+│                                                                          │
+│  2. CANDIDATO ENVIA CV                                                  │
+│     ╔════════════════════════════════════════════╗                     │
+│     ║ App Flutter                                ║                     │
+│     ║ POST /api/curriculos/upload                ║                     │
+│     ║ Header: Authorization: Bearer JWT          ║                     │
+│     ║ Body: multipart/form-data (PDF)            ║                     │
+│     ╚════════════════════════════════════════════╝                     │
+│               ▼                                                          │
+│     ┌─────────────────────────────────────────────┐                    │
+│     │ Validações                                  │                    │
+│     │ ✓ JWT válido                                │                    │
+│     │ ✓ Permissão "enviar_cv"                    │                    │
+│     │ ✓ PDF válido (< 10MB)                      │                    │
+│     │ ✓ Calcular SHA256                          │                    │
+│     └─────────────────────────────────────────────┘                    │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ S3 Upload                                      │                 │
+│     │ /curriculos/{usuario_id}/v1_hash.pdf           │                 │
+│     └────────────────────────────────────────────────┘                 │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ db.curriculos (novo)                           │                 │
+│     │ {                                              │                 │
+│     │   usuario_id: "...",                           │                 │
+│     │   versao: 1,                                   │                 │
+│     │   arquivo_url: "s3://...",                     │                 │
+│     │   arquivo_hash: "abc123...",                   │                 │
+│     │   ativo: true                                  │                 │
+│     │ }                                              │                 │
+│     └────────────────────────────────────────────────┘                 │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ db.auditoria                                   │                 │
+│     │ "usuario_123 fez upload_curriculo"             │                 │
+│     └────────────────────────────────────────────────┘                 │
+│                                                                          │
+│  3. CANDIDATO ACEITA LGPD                                               │
+│     ╔════════════════════════════════════════════╗                     │
+│     ║ App Flutter                                ║                     │
+│     ║ PATCH /api/candidatos/:id/consentimento    ║                     │
+│     ║ { consentimento: true }                    ║                     │
+│     ╚════════════════════════════════════════════╝                     │
+│               ▼                                                          │
+│     ┌───────────────────────────────────────────┐                      │
+│     │ db.candidatos.consentimento_dados         │                      │
+│     │ {                                         │                      │
+│     │   aceito: true,                           │                      │
+│     │   data_aceite: now,                       │                      │
+│     │   ip_aceite: "192.168.1.1"                │                      │
+│     │ }                                         │                      │
+│     └───────────────────────────────────────────┘                      │
+│               ▼                                                          │
+│     ┌───────────────────────────────────────────┐                      │
+│     │ db.auditoria                              │                      │
+│     │ "usuario_123 deu consentimento LGPD"      │                      │
+│     └───────────────────────────────────────────┘                      │
+│                                                                          │
+│  4. RH ACESSA PERFIL DO CANDIDATO                                       │
+│     ╔════════════════════════════════════════════╗                     │
+│     ║ Web Neo RH System                          ║                     │
+│     ║ GET /api/candidatos/:id                    ║                     │
+│     ║ Header: Authorization: Bearer JWT_RH       ║                     │
+│     ╚════════════════════════════════════════════╝                     │
+│               ▼                                                          │
+│     ┌─────────────────────────────────────────────┐                    │
+│     │ Validações                                  │                    │
+│     │ ✓ RH token válido                           │                    │
+│     │ ✓ RH tem permissão "ver_candidatos"        │                    │
+│     │ ✓ Candidato consentiu? ✓                    │                    │
+│     │ ✓ Candidato está ativo? ✓                   │                    │
+│     └─────────────────────────────────────────────┘                    │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ db.candidatos.find()                           │                 │
+│     │ + db.curriculos.find({ativo: true})            │                 │
+│     │ Retorna: nome, email, telefone, cv_url, ...    │                 │
+│     └────────────────────────────────────────────────┘                 │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ db.curriculos_acesso (novo)                    │                 │
+│     │ Auditoria LGPD:                                │                 │
+│     │ "rh_user_456 viu_cv candidato_123"             │                 │
+│     │ {                                              │                 │
+│     │   usuario_candidato_id: "123",                 │                 │
+│     │   usuario_acesso_id: "456",                    │                 │
+│     │   tipo_acesso: "visualizacao",                 │                 │
+│     │   timestamp: now,                              │                 │
+│     │   resultado_acesso: "sucesso"                  │                 │
+│     │ }                                              │                 │
+│     └────────────────────────────────────────────────┘                 │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ Response JSON                                  │                 │
+│     │ + S3 URL do CV (iframe/viewer)                 │                 │
+│     └────────────────────────────────────────────────┘                 │
+│                                                                          │
+│  5. RH APLICA CANDIDATO A VAGA                                          │
+│     ╔════════════════════════════════════════════╗                     │
+│     ║ Web Neo RH System                          ║                     │
+│     ║ POST /api/vagas/:id/aplicar                ║                     │
+│     ║ { candidato_id }                           ║                     │
+│     ╚════════════════════════════════════════════╝                     │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ db.vagas.candidatos_aplicados.push()           │                 │
+│     │ db.candidatos.status_processamento = "em_triagem" │              │
+│     └────────────────────────────────────────────────┘                 │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ db.auditoria                                   │                 │
+│     │ "rh_456 aplicou candidato_123 a vaga_789"      │                 │
+│     └────────────────────────────────────────────────┘                 │
+│               ▼                                                          │
+│     ┌────────────────────────────────────────────────┐                 │
+│     │ Notificação para candidato (email)             │                 │
+│     │ "Você foi pré-selecionado para..."             │                 │
+│     └────────────────────────────────────────────────┘                 │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+
+PERMISOS POR TIPO DE USUÁRIO
+┌───────────┬──────────────┬────────────┬──────────┬──────────┬───────────┐
+│ Ação      │ RH           │ Recruiter  │ Admin    │ Empresa  │ Candidato │
+├───────────┼──────────────┼────────────┼──────────┼──────────┼───────────┤
+│ Ver CV    │ ✓            │ ✓          │ ✓        │ ✓(dados) │ ✓(próprio)│
+│ Upload CV │ ✓            │ ✓          │ ✓        │ ✗        │ ✓         │
+│ Criar vaga│ ✓            │ ✓          │ ✓        │ ✓        │ ✗         │
+│ Ver vagas │ ✓            │ ✓          │ ✓        │ ✓        │ ✓         │
+│ Auditoria │ ✓            │ ✓          │ ✓        │ ✗        │ ✗         │
+│ LGPD      │ Respeitar    │ Respeitar  │ Respeitar│Respeitar │ Controlar │
+└───────────┴──────────────┴────────────┴──────────┴──────────┴───────────┘
+
+================================================================================

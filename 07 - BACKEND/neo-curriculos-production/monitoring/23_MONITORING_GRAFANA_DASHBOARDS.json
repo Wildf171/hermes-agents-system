@@ -1,0 +1,389 @@
+{
+  "dashboard": {
+    "title": "Neo Currículos - Production Overview",
+    "description": "Real-time monitoring of Neo Currículos production infrastructure",
+    "timezone": "UTC",
+    "refresh": "30s",
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "uid": "neo-curriculos-prod",
+    "version": 1,
+    "panels": [
+      {
+        "id": 1,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+        "title": "API Requests/sec",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total[5m])",
+            "legendFormat": "{{ method }} {{ path }}",
+            "refId": "A"
+          }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": { "type": "gt", "params": [100] },
+              "operator": { "type": "and" },
+              "query": { "params": ["A", "5m", "now"] },
+              "reducer": { "params": [], "type": "avg" },
+              "type": "query"
+            }
+          ],
+          "frequency": "5m",
+          "handler": 1,
+          "name": "High throughput alert",
+          "noDataState": "no_data",
+          "notifications": []
+        }
+      },
+      {
+        "id": 2,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+        "title": "API Error Rate (%)",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "rate(http_errors_total[5m]) * 100",
+            "legendFormat": "Error %",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [
+          {
+            "value": 0.5,
+            "color": "green",
+            "op": "lt"
+          },
+          {
+            "value": 2,
+            "color": "yellow",
+            "op": "lt"
+          },
+          {
+            "value": 5,
+            "color": "red",
+            "op": "gte"
+          }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": { "type": "gt", "params": [5] },
+              "operator": { "type": "and" },
+              "query": { "params": ["A", "5m", "now"] },
+              "reducer": { "params": [], "type": "avg" },
+              "type": "query"
+            }
+          ],
+          "frequency": "1m",
+          "handler": 1,
+          "name": "High error rate alert"
+        }
+      },
+      {
+        "id": 3,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+        "title": "API Latency - p99 (seconds)",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "p99",
+            "refId": "A"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "p95",
+            "refId": "B"
+          },
+          {
+            "expr": "histogram_quantile(0.50, rate(http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "p50",
+            "refId": "C"
+          }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": { "type": "gt", "params": [2] },
+              "operator": { "type": "and" },
+              "query": { "params": ["A", "5m", "now"] },
+              "reducer": { "params": [], "type": "avg" },
+              "type": "query"
+            }
+          ],
+          "frequency": "5m",
+          "handler": 1,
+          "name": "High latency alert (p99 > 2s)"
+        }
+      },
+      {
+        "id": 4,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+        "title": "Database Connections",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "mongodb_connections_current",
+            "legendFormat": "Current",
+            "refId": "A"
+          },
+          {
+            "expr": "mongodb_connections_available",
+            "legendFormat": "Available",
+            "refId": "B"
+          }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": { "type": "gt", "params": [90] },
+              "operator": { "type": "and" },
+              "query": { "params": ["A", "5m", "now"] },
+              "reducer": { "params": [], "type": "avg" },
+              "type": "query"
+            }
+          ],
+          "frequency": "5m",
+          "handler": 1,
+          "name": "Database connection pool high"
+        }
+      },
+      {
+        "id": 5,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+        "title": "Database CPU Usage (%)",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "mongodb_server_status_cpu_utilization * 100",
+            "legendFormat": "CPU %",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [
+          { "value": 70, "color": "yellow", "op": "lt" },
+          { "value": 90, "color": "red", "op": "gte" }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": { "type": "gt", "params": [80] },
+              "operator": { "type": "and" },
+              "query": { "params": ["A", "5m", "now"] },
+              "reducer": { "params": [], "type": "avg" },
+              "type": "query"
+            }
+          ],
+          "frequency": "5m",
+          "handler": 1,
+          "name": "Database CPU high"
+        }
+      },
+      {
+        "id": 6,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+        "title": "Memory Usage (%)",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "container_memory_usage_bytes{pod=~'neo-curriculos.*'} / container_memory_limit_bytes{pod=~'neo-curriculos.*'} * 100",
+            "legendFormat": "{{ pod }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [
+          { "value": 70, "color": "green", "op": "lt" },
+          { "value": 85, "color": "yellow", "op": "lt" },
+          { "value": 95, "color": "red", "op": "gte" }
+        ]
+      },
+      {
+        "id": 7,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+        "title": "Disk Usage (%)",
+        "type": "gauge",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "(1 - (node_filesystem_avail_bytes{mountpoint='/'} / node_filesystem_size_bytes)) * 100",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "yellow", "value": 80 },
+                { "color": "red", "value": 95 }
+              ]
+            },
+            "unit": "percent",
+            "max": 100,
+            "min": 0
+          }
+        },
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": { "type": "gt", "params": [80] },
+              "operator": { "type": "and" },
+              "query": { "params": ["A", "5m", "now"] },
+              "reducer": { "params": [], "type": "avg" },
+              "type": "query"
+            }
+          ],
+          "frequency": "5m",
+          "handler": 1,
+          "name": "Disk usage high"
+        }
+      },
+      {
+        "id": 8,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+        "title": "Network I/O (bytes/sec)",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "rate(node_network_receive_bytes_total[5m])",
+            "legendFormat": "Receive",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(node_network_transmit_bytes_total[5m])",
+            "legendFormat": "Transmit",
+            "refId": "B"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "gridPos": { "h": 4, "w": 8, "x": 0, "y": 32 },
+        "title": "Uptime (hours)",
+        "type": "stat",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "time() - process_start_time_seconds{job='neo-curriculos-api'}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "custom": {
+              "hideFrom": {
+                "tooltip": false,
+                "viz": false,
+                "legend": false
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": 10,
+        "gridPos": { "h": 4, "w": 8, "x": 8, "y": 32 },
+        "title": "API Status",
+        "type": "stat",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "up{job='neo-curriculos-api'}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "0": { "text": "DOWN", "color": "red" },
+                  "1": { "text": "UP", "color": "green" }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": 11,
+        "gridPos": { "h": 4, "w": 8, "x": 16, "y": 32 },
+        "title": "DB Status",
+        "type": "stat",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "up{job='mongodb'}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "0": { "text": "DOWN", "color": "red" },
+                  "1": { "text": "UP", "color": "green" }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": 12,
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 36 },
+        "title": "Slow Queries (> 1 second)",
+        "type": "table",
+        "datasource": "MongoDB",
+        "targets": [
+          {
+            "query": "db.system.profile.find({millis: {$gt: 1000}}).sort({ts: -1}).limit(20)",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "auto"
+            }
+          },
+          "overrides": [
+            { "matcher": { "id": "byName", "options": "millis" }, "properties": [{ "id": "custom.width", "value": 100 }] },
+            { "matcher": { "id": "byName", "options": "ns" }, "properties": [{ "id": "custom.width", "value": 200 }] }
+          ]
+        }
+      }
+    ],
+    "refresh": "30s",
+    "templating": {
+      "list": [
+        {
+          "name": "instance",
+          "type": "query",
+          "datasource": "Prometheus",
+          "query": "label_values(up{job='neo-curriculos-api'}, instance)",
+          "multi": true,
+          "includeAll": true
+        }
+      ]
+    }
+  },
+  "overwrite": false
+}

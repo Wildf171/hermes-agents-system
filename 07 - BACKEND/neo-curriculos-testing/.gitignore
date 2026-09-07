@@ -1,0 +1,277 @@
+# ============================================================================
+# .gitignore - Git ignore patterns
+# ============================================================================
+
+# ============================================================================
+# PYTHON
+# ============================================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ============================================================================
+# TESTING
+# ============================================================================
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.hypothesis/
+pytest-report.html
+.py_cache/
+
+# Coverage
+coverage.xml
+coverage.json
+*.cover
+
+# pytest
+pytest.ini.bak
+
+# ============================================================================
+# IDE & EDITORS
+# ============================================================================
+
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+*~
+.sublime-*
+
+# PyCharm
+.pyproject.toml.bak
+
+# ============================================================================
+# ENVIRONMENT & SECRETS
+# ============================================================================
+
+.env
+.env.local
+.env.*.local
+.env.prod
+.env.staging
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+aws-credentials.txt
+gcp-*.json
+
+# ============================================================================
+# LOGS
+# ============================================================================
+
+*.log
+*.log.*
+logs/
+*.out
+debug.log
+
+# ============================================================================
+# TEMPORARY FILES
+# ============================================================================
+
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+*.swp
+*.swo
+*~
+.#*
+*.lck
+*.lock
+
+# ============================================================================
+# OS SPECIFIC
+# ============================================================================
+
+# Windows
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+.directory
+
+# ============================================================================
+# DOCKER
+# ============================================================================
+
+docker-compose.override.yml
+.docker/
+
+# ============================================================================
+# DATABASE
+# ============================================================================
+
+*.db
+*.sqlite
+*.sqlite3
+mongo-data/
+redis-data/
+
+# ============================================================================
+# BUILD & DEPLOYMENT
+# ============================================================================
+
+dist/
+build/
+*.tar.gz
+*.zip
+deploy-*.log
+rollback-*.log
+
+# Kubernetes
+*.yaml.bak
+k8s-override/
+
+# ============================================================================
+# MONITORING & LOGS
+# ============================================================================
+
+prometheus-data/
+grafana-storage/
+*.prom
+alertmanager-data/
+
+# ============================================================================
+# LOCAL TEST ARTIFACTS
+# ============================================================================
+
+.pytest_cache/
+test-reports/
+test-screenshots/
+test-videos/
+
+# ============================================================================
+# UPLOADS & TEMPORARY DATA
+# ============================================================================
+
+uploads/
+temp/
+tmp/
+*.csv
+*.xlsx
+/data/
+
+# ============================================================================
+# NODE.JS (if Frontend)
+# ============================================================================
+
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# ============================================================================
+# MISC
+# ============================================================================
+
+*.DS_Store
+.env
+.vscode
+.idea
+*.iml
+
+# Bandit reports
+.bandit
+bandit-report.json
+
+# SonarCloud
+.scannerwork/
+
+# ============================================================================
+# SPECIFIC IGNORES FOR THIS PROJECT
+# ============================================================================
+
+# Test coverage reports (keep only in CI/CD)
+htmlcov/
+coverage.xml
+
+# Load test reports (keep archive)
+LOAD_TEST_REPORT*.md
+
+# Prometheus/Grafana data
+prometheus-data/
+grafana/
+
+# Docker volumes
+volumes/
+data/
+
+# Backup files
+*.backup
+*.bak
+backups/
+
+# SSH keys
+*.pem
+!example.pem
+
+# ============================================================================
+# BUT KEEP THESE
+# ============================================================================
+
+# Keep important documentation
+!docs/
+!scripts/
+!monitoring/
+!.github/
+
+# Keep requirements
+!requirements*.txt
+
+# Keep configuration templates
+!.env.example
+!.env.staging.example
+
+# Keep test files
+!tests/
+!conftest.py
+!pytest.ini
+
+# ============================================================================

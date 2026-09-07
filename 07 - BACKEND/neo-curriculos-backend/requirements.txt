@@ -1,0 +1,40 @@
+# Framework e Web
+flask==3.0.0
+flask-jwt-extended==4.5.2
+flask-cors==4.0.0
+flask-pymongo==2.3.0
+
+# Validação e Serialização
+pydantic==2.5.0
+pydantic[email]==2.5.0
+
+# Banco de Dados
+pymongo==4.6.0
+mongomock==4.1.2
+
+# Storage - S3/MinIO
+boto3==1.28.0
+minio==7.2.0
+
+# Segurança
+bcrypt==4.1.1
+python-dotenv==1.0.0
+cryptography==41.0.7
+
+# PDF e Arquivo
+PyPDF2==3.0.1
+python-magic-bin==0.4.14
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+moto==4.2.10
+
+# Logging e Monitoramento
+python-json-logger==2.0.7
+
+# Rate Limiting
+flask-limiter==3.5.0
+
+# Development
+python-dateutil==2.8.2

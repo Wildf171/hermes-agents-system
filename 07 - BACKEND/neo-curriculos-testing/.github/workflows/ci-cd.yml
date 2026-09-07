@@ -1,0 +1,382 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # ========================================================================
+  # JOB 1: LINT, SECURITY & UNIT TESTS
+  # ========================================================================
+
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6.0
+        options: >-
+          --health-cmd mongosh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: password
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov flake8 bandit mongomock
+
+      - name: Run Flake8 linting
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+
+      - name: Run Bandit security scan
+        run: |
+          bandit -r . -ll --skip B101,B601 -f json -o bandit-report.json || true
+          bandit -r . -ll --skip B101,B601
+
+      - name: Wait for MongoDB
+        run: |
+          echo "Waiting for MongoDB..."
+          for i in {1..30}; do
+            if nc -z localhost 27017; then
+              echo "MongoDB is ready"
+              exit 0
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 1
+          done
+          exit 1
+
+      - name: Run pytest (unit + integration + E2E)
+        env:
+          FLASK_ENV: testing
+          TEST_MONGO_URI: mongodb://admin:password@localhost:27017/neo_rh_test
+          JWT_SECRET_KEY: test-secret-key-min-32-chars
+        run: |
+          pytest tests/ \
+            --cov=. \
+            --cov-report=xml \
+            --cov-report=html \
+            --cov-report=term \
+            --tb=short \
+            -v
+
+      - name: Run E2E tests
+        env:
+          FLASK_ENV: testing
+          TEST_MONGO_URI: mongodb://admin:password@localhost:27017/neo_rh_test
+        run: |
+          pytest tests/10_TESTES_E2E.py \
+            --tb=short \
+            -v \
+            -x
+
+      - name: Run Security tests
+        env:
+          FLASK_ENV: testing
+          TEST_MONGO_URI: mongodb://admin:password@localhost:27017/neo_rh_test
+        run: |
+          pytest tests/11_TESTES_SEGURANCA.py \
+            --tb=short \
+            -v \
+            -x
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: htmlcov/
+
+      - name: Upload bandit report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: bandit-report
+          path: bandit-report.json
+
+  # ========================================================================
+  # JOB 2: BUILD DOCKER IMAGE
+  # ========================================================================
+
+  build-docker:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          tags: neo-curriculos:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ========================================================================
+  # JOB 3: DEPLOY TO STAGING (on develop)
+  # ========================================================================
+
+  staging-deploy:
+    needs: [ lint-and-test, build-docker ]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Staging
+        run: |
+          bash scripts/deploy-staging.sh
+        env:
+          STAGING_SERVER: ${{ secrets.STAGING_SERVER }}
+          STAGING_SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          STAGING_USER: ${{ secrets.STAGING_USER }}
+          MONGO_URI: ${{ secrets.STAGING_MONGO_URI }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+
+      - name: Run Smoke Tests
+        env:
+          TEST_BASE_URL: ${{ secrets.STAGING_URL }}
+        run: |
+          python -m pip install requests pytest
+          pytest tests/14_SMOKE_TESTS.py -v -m smoke
+
+      - name: Notify Slack - Success
+        if: success()
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "✅ Staging deployment successful",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Staging Deployment*\n✅ Status: Success\n🚀 Branch: develop\n📝 Commit: ${{ github.sha }}\n👤 Author: ${{ github.actor }}"
+                  }
+                }
+              ]
+            }
+
+      - name: Notify Slack - Failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "❌ Staging deployment failed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Staging Deployment*\n❌ Status: Failed\n🚀 Branch: develop\n📝 Commit: ${{ github.sha }}\n👤 Author: ${{ github.actor }}"
+                  }
+                }
+              ]
+            }
+
+  # ========================================================================
+  # JOB 4: PERFORMANCE TESTS (on develop)
+  # ========================================================================
+
+  performance-tests:
+    needs: staging-deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          pip install pytest requests
+
+      - name: Run Load Tests (baseline)
+        env:
+          TEST_BASE_URL: ${{ secrets.STAGING_URL }}
+        run: |
+          pytest tests/12_LOAD_TESTING.py::TestBaselinePerformance -v --tb=short
+
+      - name: Upload Load Test Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: load-test-report
+          path: LOAD_TEST_REPORT.md
+
+  # ========================================================================
+  # JOB 5: DEPLOY TO PRODUCTION (on main, manual trigger)
+  # ========================================================================
+
+  production-deploy:
+    needs: [ lint-and-test, build-docker ]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: ${{ secrets.PRODUCTION_URL }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Production Deploy
+        run: |
+          bash scripts/deploy-production.sh
+        env:
+          PROD_SERVER: ${{ secrets.PROD_SERVER }}
+          PROD_SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
+          PROD_USER: ${{ secrets.PROD_USER }}
+          MONGO_URI: ${{ secrets.PROD_MONGO_URI }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
+      - name: Run Production Smoke Tests
+        env:
+          TEST_BASE_URL: ${{ secrets.PRODUCTION_URL }}
+        run: |
+          python -m pip install requests pytest
+          pytest tests/14_SMOKE_TESTS.py -v -m smoke
+
+      - name: Notify Slack - Prod Success
+        if: success()
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "🎉 Production deployment successful",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Production Deployment*\n✅ Status: Success\n🚀 Version: ${{ github.ref_name }}\n📝 Commit: ${{ github.sha }}\n👤 Author: ${{ github.actor }}"
+                  }
+                }
+              ]
+            }
+
+      - name: Notify Slack - Prod Failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "🚨 Production deployment FAILED - ROLLBACK REQUIRED",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Production Deployment*\n❌ Status: FAILED\n🚀 Version: ${{ github.ref_name }}\n📝 Commit: ${{ github.sha }}\n👤 Author: ${{ github.actor }}\n\n⚠️  ROLLBACK REQUIRED"
+                  }
+                }
+              ]
+            }
+
+  # ========================================================================
+  # JOB 6: SECURITY SCANNING (SAST)
+  # ========================================================================
+
+  security-scan:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+# ============================================================================
+# WORKFLOW STATUS
+# ============================================================================
+#
+# Status: ✓ IMPLEMENTED
+#
+# Triggers:
+#   - push to main, develop, feature/* branches
+#   - pull_request to main, develop
+#
+# Secrets Required (configure in GitHub):
+#   - STAGING_SERVER, STAGING_USER, STAGING_SSH_KEY, STAGING_MONGO_URI, STAGING_URL
+#   - PROD_SERVER, PROD_USER, PROD_SSH_KEY, PROD_MONGO_URI, PRODUCTION_URL
+#   - JWT_SECRET_KEY
+#   - SLACK_WEBHOOK
+#   - SENTRY_DSN
+#   - SONAR_TOKEN
+#
+# Jobs:
+#   1. lint-and-test (always)
+#   2. build-docker (always, no push)
+#   3. staging-deploy (develop only)
+#   4. performance-tests (develop only)
+#   5. production-deploy (main only, needs approval)
+#   6. security-scan (PRs and main)
+# ============================================================================

@@ -1,0 +1,388 @@
+================================================================================
+                        FLUXO DE DADOS: NEO CURRÍCULOS
+================================================================================
+
+MODELO ENTIDADE-RELACIONAMENTO (E-R)
+┌──────────────────────────────────────────────────────────────────────────┐
+│                                                                          │
+│  ┌──────────────┐                          ┌──────────────┐             │
+│  │   USUARIOS   │  ◄───────────────────────│  CANDIDATOS  │             │
+│  ├──────────────┤                          ├──────────────┤             │
+│  │ _id (PK)     │                          │ _id (PK)     │             │
+│  │ email (UQ)   │──────────┐               │ email (UQ)   │             │
+│  │ nome         │          │               │ usuario_id*  │──┐          │
+│  │ tipo         │          │               │ nome         │  │          │
+│  │ eh_candidato │          │               │ telefone     │  └─┐        │
+│  │ empresa_id*  │          │               │ estado       │    │        │
+│  │ senha_hash   │          │               │ categoria    │    │        │
+│  │ permissoes[] │          └───────────────│ consentimento│    │        │
+│  │ ativo        │                          │   _dados     │    │        │
+│  │ criado_em    │                          │ empresas_    │    │        │
+│  │ ... (LGPD)   │                          │   acesso[]   │    │        │
+│  └──────────────┘                          │ score_       │    │        │
+│        │                                    │   compat    │    │        │
+│        │                          ┌─────────│ curriculo_   │    │        │
+│        │ 1                         │         │   ativo      │    │        │
+│        │                           │         │ historico_   │    │        │
+│        │ N                         │         │   curriculos │    │        │
+│        │                           │         │ ... (LGPD)   │    │        │
+│        └──────────────┐            │         └──────────────┘    │        │
+│                       │            │                            │        │
+│                       ▼            │                            ▼        │
+│        ┌──────────────────────────┐│        ┌─────────────────────────┐ │
+│        │    EMPRESAS              ││        │    CURRICULOS (NOVO)    │ │
+│        ├──────────────────────────┤│        ├─────────────────────────┤ │
+│        │ _id (PK)                 ││        │ _id (PK)                │ │
+│        │ cnpj (UQ)                ││        │ usuario_id* (FK)────────┘ │
+│        │ nome                     ││        │ candidato_id* (FK)──────┐  │
+│        │ usuarios[]               ││        │ versao                  │  │
+│        │ vagas[]                  ││        │ ativo                   │  │
+│        │ ...                      ││        │ arquivo_url (S3)        │  │
+│        └──────────────────────────┘│        │ arquivo_hash (UQ)       │  │
+│                    │                │        │ criado_em               │  │
+│                    │                │        │ ...                     │  │
+│                    │                │        └─────────────────────────┘  │
+│                    │                │                  │                  │
+│        ┌───────────┘                │                  │ 1                │
+│        │                            │                  │                  │
+│        │ N                           │                  │                  │
+│        │                            │                  ▼                  │
+│        ▼                            │        ┌──────────────────────────┐ │
+│  ┌──────────────┐                  │        │  CURRICULOS_ACESSO      │ │
+│  │    VAGAS     │                  └─────────│    (NOVO - AUDITORIA)   │ │
+│  ├──────────────┤                           ├──────────────────────────┤ │
+│  │ _id (PK)     │                           │ _id (PK)                 │ │
+│  │ empresa_id*  │─────────┐                 │ curriculo_id* (FK)       │ │
+│  │ titulo       │         │                 │ usuario_candidato_id*    │ │
+│  │ descricao    │         │                 │ usuario_acesso_id*       │ │
+│  │ estado       │         │                 │ tipo_acesso              │ │
+│  │ salario_*    │         │                 │ resultado_acesso         │ │
+│  │ candidatos_  │         │                 │ ip_origem                │ │
+│  │   aplicados[]│         │                 │ timestamp (TTL 7 anos)   │ │
+│  │ criado_em    │         │                 │ ...                      │ │
+│  └──────────────┘         │                 └──────────────────────────┘ │
+│                           │                                              │
+│                           │         ┌──────────────────────────┐         │
+│                           └────────►│    AUDITORIA             │         │
+│                                     ├──────────────────────────┤         │
+│                                     │ _id (PK)                 │         │
+│                                     │ usuario_id* (FK)         │         │
+│                                     │ acao                     │         │
+│                                     │ recurso_id* (FK)         │         │
+│                                     │ timestamp (TTL 90 dias)  │         │
+│                                     │ resultado                │         │
+│                                     │ dados_antigos            │         │
+│                                     │ dados_novos              │         │
+│                                     │ ...                      │         │
+│                                     └──────────────────────────┘         │
+│                                                                          │
+│  LEGENDAS:                                                              │
+│  PK = Primary Key (_id)                                                 │
+│  FK = Foreign Key (referência)                                          │
+│  UQ = Unique constraint                                                 │
+│  * = pode ser NULL para tipos específicos                               │
+│  [] = Array de referências                                              │
+│  TTL = Time-To-Live (auto-delete após período)                          │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+
+MUDANÇAS NO SCHEMA EXISTENTE
+┌──────────────────────────────────────────────────────────────────────────┐
+│                                                                          │
+│  USUARIOS (Antes)                    USUARIOS (Depois - v2.0)           │
+│  ┌─────────────────────────┐        ┌──────────────────────────────┐   │
+│  │ _id: ObjectId           │        │ _id: ObjectId                │   │
+│  │ email: String           │        │ email: String                │   │
+│  │ nome: String            │        │ nome: String                 │   │
+│  │ tipo: enum [rh, ...]    │  ──▶   │ tipo: enum [..., candidato] │   │
+│  │ empresa_id: ObjectId    │        │ empresa_id: ObjectId         │   │
+│  │ senha_hash: String      │        │ senha_hash: String           │   │
+│  │ ativo: Boolean          │        │ ativo: Boolean               │   │
+│  │ criado_em: ISODate      │        │ criado_em: ISODate           │   │
+│  │ ...                     │        │ ...                          │   │
+│  │                         │        │                              │   │
+│  │                         │        │ [NOVO] eh_candidato: Boolean │   │
+│  │                         │        │ [NOVO] marcado_para_delecao  │   │
+│  │                         │        │ [NOVO] data_delecao_solicitad
+│  │                         │        │ [NOVO] migrado_neo_curriculos│   │
+│  └─────────────────────────┘        └──────────────────────────────┘   │
+│                                                                          │
+│  CANDIDATOS (Antes)                  CANDIDATOS (Depois - v2.0)        │
+│  ┌──────────────────────────┐       ┌──────────────────────────────┐   │
+│  │ _id: ObjectId            │       │ _id: ObjectId                │   │
+│  │ nome: String             │       │ nome: String                 │   │
+│  │ email: String            │       │ email: String                │   │
+│  │ telefone: String         │       │ telefone: String             │   │
+│  │ estado: String           │  ───▶ │ estado: String               │   │
+│  │ categoria: enum          │       │ categoria: enum              │   │
+│  │ experiencia_anos: Int    │       │ experiencia_anos: Int        │   │
+│  │ salario_pretendido: Num  │       │ salario_pretendido: Num      │   │
+│  │ empresas_acesso: [OID]   │       │ empresas_acesso: [OID]       │   │
+│  │ score_compatibilidade    │       │ score_compatibilidade        │   │
+│  │ criado_em: ISODate       │       │ criado_em: ISODate           │   │
+│  │ ...                      │       │ ...                          │   │
+│  │                          │       │                              │   │
+│  │                          │       │ [NOVO] usuario_id: ObjectId  │   │
+│  │                          │       │ [NOVO] curriculo_ativo: {...}│   │
+│  │                          │       │ [NOVO] historico_curriculos[]│   │
+│  │                          │       │ [NOVO] consentimento_dados   │   │
+│  │                          │       │ [NOVO] permissoes[]          │   │
+│  │                          │       │ [NOVO] marcado_para_delecao  │   │
+│  └──────────────────────────┘       └──────────────────────────────┘   │
+│                                                                          │
+│  Campos removidos: NENHUM (backward compatible)                         │
+│  Campos adicionados: 7 novos em usuarios, 6 novos em candidatos        │
+│  Mudanças em índices: +8 novos índices compostos                       │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+
+FLUXO DE DADOS: CVLEGPD
+┌──────────────────────────────────────────────────────────────────────────┐
+│                                                                          │
+│  ETAPA 1: REGISTRO DO CANDIDATO                                          │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ App Flutter                                             │             │
+│  │ ├─ Tela: Registro (email, nome, senha)                 │             │
+│  │ └─ [CRIAR CONTA]                                        │             │
+│  └────────────────────┬────────────────────────────────────┘             │
+│                       │ POST /api/auth/registrar                         │
+│                       ▼                                                   │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ API                                                     │             │
+│  │ ├─ Validar email não existe                           │             │
+│  │ ├─ Hash password (bcrypt)                             │             │
+│  │ └─ Criar usuario (tipo="candidato", eh_candidato=true)│             │
+│  └────────────────────┬────────────────────────────────────┘             │
+│                       │                                                   │
+│       ┌───────────────┴───────────────┐                                 │
+│       ▼                               ▼                                  │
+│  MongoDB                         Redis                                   │
+│  db.usuarios:                   (Sessions)                               │
+│  {                              access_token:                            │
+│    _id: "abc123",               ├─ user_id: "abc123"                    │
+│    email: "joao@...",           ├─ exp: timestamp                        │
+│    tipo: "candidato",           └─ ttl: 24h                              │
+│    eh_candidato: true                                                    │
+│  }                                                                        │
+│                       │                                                   │
+│                       │ JWT Token                                        │
+│                       ▼                                                   │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ App Flutter                                             │             │
+│  │ Response: { access_token, refresh_token, usuario }      │             │
+│  │ Store: device secure storage (Keychain/Keystore)        │             │
+│  └─────────────────────────────────────────────────────────┘             │
+│                                                                          │
+│  ETAPA 2: UPLOAD DE CV                                                   │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ App Flutter                                             │             │
+│  │ ├─ Tela: Meu Perfil → Carregar CV                       │             │
+│  │ ├─ Seleciona: curriculo.pdf (5MB)                       │             │
+│  │ └─ [ENVIAR]                                             │             │
+│  └────────────────────┬────────────────────────────────────┘             │
+│                       │ POST /api/curriculos/upload                      │
+│                       │ Header: Authorization: Bearer JWT                │
+│                       │ Body: multipart/form-data                        │
+│                       ▼                                                   │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ API (Middleware JWT)                                    │             │
+│  │ ├─ Validar token                                       │             │
+│  │ ├─ Extrair usuario_id                                  │             │
+│  │ └─ Verificar permissão "enviar_cv"                     │             │
+│  └────────────────────┬────────────────────────────────────┘             │
+│                       │                                                   │
+│  ┌────────────────────┴────────────────────┐                            │
+│  │ Validações do arquivo                  │                            │
+│  │ ├─ Mime type = application/pdf ✓       │                            │
+│  │ ├─ Tamanho < 10MB ✓                    │                            │
+│  │ ├─ Calcular SHA256 hash                │                            │
+│  │ └─ Varrer antivírus (opcional)         │                            │
+│  └────────────────────┬────────────────────┘                            │
+│                       │                                                   │
+│       ┌───────────────┴──────────────┐                                  │
+│       ▼                              ▼                                   │
+│  S3/MinIO Upload              MongoDB INSERT                             │
+│  ┌──────────────────┐          ┌──────────────────┐                     │
+│  │ bucket:          │          │ db.curriculos:   │                     │
+│  │ curriculos/      │          │ {                │                     │
+│  │ abc123/          │          │   _id: OID,      │                     │
+│  │ v1_hash8.pdf     │          │   usuario_id:    │                     │
+│  │                  │          │     "abc123",    │                     │
+│  │ Versioning: ON   │          │   versao: 1,     │                     │
+│  │ Encryption: ON   │          │   arquivo_url:   │                     │
+│  │ Replicação: ON   │          │     "s3://...",  │                     │
+│  └──────────────────┘          │   arquivo_hash:  │                     │
+│                                │     "abc123...", │                     │
+│                                │   ativo: true    │                     │
+│                                │ }                │                     │
+│                                └──────────────────┘                     │
+│                                       │                                  │
+│       ┌───────────────────────────────┘                                 │
+│       │ Marcar versões anteriores como inativas                         │
+│       ▼                                                                   │
+│  ┌──────────────────────────────────────┐                              │
+│  │ db.auditoria INSERT                  │                              │
+│  │ {                                    │                              │
+│  │   usuario_id: "abc123",              │                              │
+│  │   acao: "upload_curriculo",          │                              │
+│  │   recurso: "curriculo:xyz789",       │                              │
+│  │   resultado: "sucesso",              │                              │
+│  │   arquivo_tamanho: 5242880,          │                              │
+│  │   arquivo_hash: "abc123...",         │                              │
+│  │   timestamp: now,                    │                              │
+│  │   ip_origem: "192.168.1.1"           │                              │
+│  │ }                                    │                              │
+│  └──────────────────────────────────────┘                              │
+│                                                                          │
+│  ETAPA 3: CONSENTIMENTO LGPD                                             │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ App Flutter                                             │             │
+│  │ ├─ Tela: Privacidade & Consentimento                   │             │
+│  │ ├─ ☑ Compartilhar CV com empresas                      │             │
+│  │ ├─ ☑ Receber contato via email                         │             │
+│  │ └─ [CONFIRMAR]                                          │             │
+│  └────────────────────┬────────────────────────────────────┘             │
+│                       │ PATCH /api/candidatos/:id/consentimento          │
+│                       ▼                                                   │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ MongoDB UPDATE db.candidatos                            │             │
+│  │ {                                                       │             │
+│  │   consentimento_dados: {                               │             │
+│  │     aceito: true,                                      │             │
+│  │     data_aceite: "2025-09-07T10:30Z",                 │             │
+│  │     ip_aceite: "192.168.1.1",                          │             │
+│  │     navegador_aceite: "Chrome Android",                │             │
+│  │     termos_versao: "2.0"                               │             │
+│  │   }                                                     │             │
+│  │ }                                                       │             │
+│  └────────────────────┬────────────────────────────────────┘             │
+│                       │                                                   │
+│                       ▼                                                   │
+│  ┌──────────────────────────────────────────────────────────┐            │
+│  │ db.auditoria INSERT (tipo_auditoria: "lgpd")             │            │
+│  │ {                                                        │            │
+│  │   usuario_id: "abc123",                                 │            │
+│  │   acao: "consentimento_dado",                           │            │
+│  │   recursos: "candidato:def456",                         │            │
+│  │   resultado: "sucesso",                                 │            │
+│  │   timestamp: now                                        │            │
+│  │ }                                                        │            │
+│  └──────────────────────────────────────────────────────────┘            │
+│                                                                          │
+│  ETAPA 4: RH ACESSA PERFIL                                               │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ Web Neo RH System (RH Login)                            │             │
+│  │ ├─ Página: Candidatos                                  │             │
+│  │ ├─ [JOAO SILVA] - CV disponível ✓                      │             │
+│  │ └─ [VER PERFIL]                                         │             │
+│  └────────────────────┬────────────────────────────────────┘             │
+│                       │ GET /api/candidatos/:id                          │
+│                       │ Header: Authorization: Bearer JWT_RH             │
+│                       ▼                                                   │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ API (Autorização)                                       │             │
+│  │ ├─ RH token válido? ✓                                  │             │
+│  │ ├─ RH tem "ver_candidatos"? ✓                          │             │
+│  │ ├─ Candidato consentiu? ✓                              │             │
+│  │ └─ Candidato ativo? ✓ → PERMITE ACESSO               │             │
+│  └────────────────────┬────────────────────────────────────┘             │
+│                       │                                                   │
+│       ┌───────────────┴─────────────────────┐                           │
+│       ▼                                     ▼                            │
+│  MongoDB QUERY                   MongoDB QUERY                           │
+│  db.candidatos.findOne()         db.curriculos.findOne()               │
+│  ├─ nome                         ├─ versao                              │
+│  ├─ email                        ├─ arquivo_url                         │
+│  ├─ telefone                     └─ arquivo_hash                        │
+│  ├─ estado                                 │                            │
+│  ├─ experiencia_anos                       │                            │
+│  ├─ salario_pretendido                     │                            │
+│  ├─ consentimento_dados.aceito             │                            │
+│  ├─ score_compatibilidade                  │                            │
+│  └─ (NÃO RETORNA CPF em logs)             │                            │
+│                                            │                            │
+│       ┌────────────────────────────────────┘                            │
+│       │                                                                  │
+│       ▼                                                                  │
+│  ┌──────────────────────────────────────┐                              │
+│  │ db.curriculos_acesso INSERT          │                              │
+│  │ {                                    │                              │
+│  │   curriculo_id: "xyz789",            │                              │
+│  │   usuario_candidato_id: "abc123",    │                              │
+│  │   usuario_acesso_id: "rh_456",       │                              │
+│  │   tipo_acesso: "visualizacao",       │                              │
+│  │   resultado_acesso: "sucesso",       │                              │
+│  │   ip_origem: "203.0.113.45",         │                              │
+│  │   timestamp: now,                    │                              │
+│  │   retenido_ate: "2032-09-07",        │ ← 7 anos                      │
+│  │   ttl_delete_em: 7years              │ ← Auto-delete                 │
+│  │ }                                    │                              │
+│  └──────────────────────────────────────┘                              │
+│                                                                          │
+│       ┌──────────────────────────────────┐                              │
+│       │                                  ▼                              │
+│       │                        S3 Signed URL                            │
+│       │                    (temporária, 1 hora)                        │
+│       │                                                                  │
+│       ▼                                                                   │
+│  ┌─────────────────────────────────────────────────────────┐             │
+│  │ Web Neo RH System                                       │             │
+│  │ Response JSON:                                          │             │
+│  │ {                                                       │             │
+│  │   candidato: {                                          │             │
+│  │     nome: "Joao Silva",                                 │             │
+│  │     email: "joao@...",                                  │             │
+│  │     telefone: "11 99999-8888",                          │             │
+│  │     estado: "SP",                                       │             │
+│  │     score_compatibilidade: 92                           │             │
+│  │   },                                                    │             │
+│  │   cv: {                                                 │             │
+│  │     versao: 1,                                          │             │
+│  │     url: "https://s3.../curriculos/abc123/v1_xyz.pdf"  │             │
+│  │   },                                                    │             │
+│  │   consentimento: true                                   │             │
+│  │ }                                                       │             │
+│  │                                                         │             │
+│  │ [Mostra CV em iframe/pdf viewer]                        │             │
+│  └─────────────────────────────────────────────────────────┘             │
+│                                                                          │
+│  FLUXO CONCLUÍDO: Candidato enviou CV → RH acessou com auditoria       │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+
+TIMELINE DE RETENÇÃO (LGPD)
+┌──────────────────────────────────────────────────────────────────────────┐
+│                                                                          │
+│  T=0 (Hoje)          T=30d                T=90d           T=7 anos      │
+│  ├─────────────────────────────────────────────────────────────┤        │
+│                                                                          │
+│  Candidato                                                              │
+│  ├─ Dados ativos ─────────────────────────[Ativo indefinidamente]       │
+│  ├─ Marcado para deleção                                                │
+│  │  ├─ [Soft delete]                                                    │
+│  │  └─ [Após 30d] ─────►[Anonimização]──────────────────────────         │
+│  │                                                                       │
+│  Currículo                                                              │
+│  ├─ Versão ativa ────────────────────────[Ativo indefinidamente]        │
+│  └─ Versão deletada ─────────────────────[Soft delete + anonimização]   │
+│                                                                          │
+│  Auditoria Geral                                                        │
+│  ├─ Ação normal ──────────────────────┤[TTL: 90d]──────────┤           │
+│  └─ Auto-delete após 90 dias                                            │
+│                                                                          │
+│  Auditoria LGPD (curriculos_acesso)                                    │
+│  ├─ Acesso a CV                                                         │
+│  ├─ Consentimento dado/revogado                                        │
+│  └─ ─────────────────────────────────────────────────────┤[TTL: 7y]───  │
+│     Auto-delete após 7 anos (compliance legal)                          │
+│                                                                          │
+│  Consentimento                                                          │
+│  ├─ Aceito ──────────────────────────[Válido até revogação]             │
+│  └─ Revogado ───────────────────────[CV invisível para RH]              │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+================================================================================

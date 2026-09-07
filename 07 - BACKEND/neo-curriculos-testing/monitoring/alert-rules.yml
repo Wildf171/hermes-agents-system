@@ -1,0 +1,246 @@
+# ============================================================================
+# alert-rules.yml - Regras de Alertas para Prometheus
+# ============================================================================
+#
+# Define quando Prometheus deve gerar alertas
+#
+# Data: 2026-09-07
+# Version: 1.0.0
+# ============================================================================
+
+groups:
+  - name: neo-curriculos-alerts
+    interval: 30s
+    rules:
+
+      # =====================================================================
+      # API HEALTH ALERTS
+      # =====================================================================
+
+      - alert: APIDown
+        expr: up{job="neo-curriculos-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: neo-curriculos
+        annotations:
+          summary: "API Neo Currículos está DOWN"
+          description: "A API não está respondendo por mais de 2 minutos"
+
+      - alert: APIHighLatency
+        expr: histogram_quantile(0.95, http_request_duration_seconds_bucket{job="neo-curriculos-api"}) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: neo-curriculos
+        annotations:
+          summary: "API tem latência alta (p95 > 2s)"
+          description: "O p95 de latência ultrapassou 2 segundos por 5 minutos"
+
+      - alert: APIHighErrorRate
+        expr: rate(http_requests_total{job="neo-curriculos-api",status=~"5.."}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: neo-curriculos
+        annotations:
+          summary: "Taxa de erro na API é alta (> 5%)"
+          description: "Mais de 5% das requisições retornam erro 5xx"
+
+      # =====================================================================
+      # DATABASE ALERTS
+      # =====================================================================
+
+      - alert: MongoDBDown
+        expr: up{job="mongodb"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: mongodb
+        annotations:
+          summary: "MongoDB está DOWN"
+          description: "MongoDB não está respondendo"
+
+      - alert: MongoDBHighConnections
+        expr: mongodb_connections_current{job="mongodb"} / mongodb_connections_available{job="mongodb"} > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: mongodb
+        annotations:
+          summary: "MongoDB com muitas conexões (> 80%)"
+          description: "Pool de conexões do MongoDB está próximo ao limite"
+
+      - alert: MongoDBDiskSpace
+        expr: node_filesystem_avail_bytes{mountpoint="/data", job="mongodb"} / node_filesystem_size_bytes{mountpoint="/data"} < 0.1
+        for: 10m
+        labels:
+          severity: critical
+          service: mongodb
+        annotations:
+          summary: "MongoDB com pouco espaço em disco (< 10%)"
+          description: "Espaço disponível em disco está crítico"
+
+      # =====================================================================
+      # HOST ALERTS
+      # =====================================================================
+
+      - alert: HighMemoryUsage
+        expr: 1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "Host com uso de memória alto (> 85%)"
+          description: "Memória RAM disponível está baixa"
+
+      - alert: HighCPUUsage
+        expr: rate(node_cpu_seconds_total{mode="idle"}[5m]) < 0.15
+        for: 10m
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "Host com uso de CPU alto (> 85%)"
+          description: "CPU está sendo fortemente utilizada"
+
+      - alert: HighDiskUsage
+        expr: node_filesystem_avail_bytes / node_filesystem_size_bytes < 0.15
+        for: 10m
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "Disco com utilização alta (> 85%)"
+          description: "Espaço em disco disponível é baixo"
+
+      - alert: DiskWillBeFull
+        expr: predict_linear(node_filesystem_avail_bytes[1h], 24*3600) < 0
+        for: 1h
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "Disco será preenchido em 24 horas"
+          description: "Taxa de crescimento do disco indica que ficará cheio em < 24h"
+
+      # =====================================================================
+      # APPLICATION ALERTS
+      # =====================================================================
+
+      - alert: HighUploadFailureRate
+        expr: rate(neo_curriculos_uploads_failed_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: neo-curriculos
+        annotations:
+          summary: "Taxa de falha em upload de CVs é alta (> 10%)"
+          description: "Muitos uploads estão falhando"
+
+      - alert: AuthenticationFailures
+        expr: rate(neo_curriculos_auth_failures_total[5m]) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: neo-curriculos
+        annotations:
+          summary: "Muitas falhas de autenticação (> 1 por segundo)"
+          description: "Taxa de falha de login está elevada"
+
+      - alert: AuditLogQueueBacklog
+        expr: neo_curriculos_audit_queue_size > 1000
+        for: 5m
+        labels:
+          severity: warning
+          service: neo-curriculos
+        annotations:
+          summary: "Fila de auditoria com atraso (> 1000 mensagens)"
+          description: "Sistema de auditoria está com backlog"
+
+      # =====================================================================
+      # SERVICE LEVEL OBJECTIVES (SLO)
+      # =====================================================================
+
+      - alert: SLOViolation_Availability
+        expr: up{job="neo-curriculos-api"} == 0 or rate(http_requests_total{job="neo-curriculos-api",status=~"5.."}[30m]) > 0.01
+        for: 5m
+        labels:
+          severity: critical
+          slo: availability
+        annotations:
+          summary: "Violação de SLO: Disponibilidade"
+          description: "SLO de disponibilidade (99.9%) foi violado"
+
+      - alert: SLOViolation_Latency
+        expr: histogram_quantile(0.99, http_request_duration_seconds_bucket{job="neo-curriculos-api"}) > 5
+        for: 15m
+        labels:
+          severity: warning
+          slo: latency
+        annotations:
+          summary: "Violação de SLO: Latência"
+          description: "SLO de latência (p99 < 5s) foi violado"
+
+      # =====================================================================
+      # SECURITY ALERTS
+      # =====================================================================
+
+      - alert: SuspiciousAuthPatterns
+        expr: rate(neo_curriculos_auth_failures_total{reason="rate_limit_exceeded"}[5m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+          service: security
+        annotations:
+          summary: "Padrão de ataque detectado (rate limiting)"
+          description: "Múltiplas tentativas de autenticação foram bloqueadas por rate limit"
+
+      - alert: UnauthorizedAPIAccess
+        expr: rate(http_requests_total{status="403"}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "Muitas tentativas de acesso não autorizado (> 0.1 req/s)"
+          description: "Taxa de erro 403 está elevada"
+
+  # =========================================================================
+  # LGPD COMPLIANCE
+  # =========================================================================
+
+  - name: neo-curriculos-lgpd
+    interval: 1h
+    rules:
+
+      - alert: LGPDComplianceCheck
+        expr: neo_curriculos_lgpd_compliance_status != 1
+        for: 1h
+        labels:
+          severity: critical
+          compliance: lgpd
+        annotations:
+          summary: "Violação de compliance LGPD detectada"
+          description: "Sistema não está em conformidade com LGPD"
+
+      - alert: AuditLogRetention
+        expr: neo_curriculos_audit_logs_retention_days < 7*365
+        for: 1h
+        labels:
+          severity: warning
+          compliance: lgpd
+        annotations:
+          summary: "Período de retenção de logs insuficiente"
+          description: "Logs devem ser retidos por 7 anos (compliance)"
+
+# ============================================================================
+# NOTAS
+# ============================================================================
+#
+# - Thresholds devem ser ajustados conforme métricas reais
+# - Labels de severity: info, warning, critical
+# - Todos os alertas devem ser configurados em AlertManager
+# - Integração com Slack, email, PagerDuty, etc via AlertManager
+# ============================================================================

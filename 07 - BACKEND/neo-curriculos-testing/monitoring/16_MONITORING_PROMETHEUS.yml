@@ -1,0 +1,111 @@
+# ============================================================================
+# 16_MONITORING_PROMETHEUS.yml - Configuração Prometheus
+# ============================================================================
+#
+# Monitoramento de métricas da aplicação Neo Currículos
+#
+# Deploy:
+#   docker-compose up -d prometheus
+#   docker-compose up -d grafana
+#   docker-compose up -d alertmanager
+#
+# Access:
+#   Prometheus: http://localhost:9090
+#   Grafana: http://localhost:3000 (admin/admin)
+#   AlertManager: http://localhost:9093
+#
+# Data: 2026-09-07
+# Version: 1.0.0
+# ============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'neo-curriculos-monitor'
+    environment: 'staging'
+
+# ============================================================================
+# SCRAPE CONFIGS
+# ============================================================================
+
+scrape_configs:
+  # API da Aplicação (Flask)
+  - job_name: 'neo-curriculos-api'
+    static_configs:
+      - targets: ['localhost:5000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'neo-api'
+
+  # MongoDB
+  - job_name: 'mongodb'
+    static_configs:
+      - targets: ['localhost:27017']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'mongo-staging'
+
+  # Node Exporter (Host Metrics)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+    scrape_interval: 15s
+
+  # Redis (se usado para cache)
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['localhost:6379']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Docker Daemon
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['localhost:9323']
+    scrape_interval: 30s
+
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+# ============================================================================
+# ALERTING RULES
+# ============================================================================
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['localhost:9093']
+
+rule_files:
+  - 'alert-rules.yml'
+  - 'recording-rules.yml'
+
+# ============================================================================
+# REMOTE WRITE (opcional - para Grafana Cloud, etc)
+# ============================================================================
+
+# remote_write:
+#   - url: "https://prometheus-blocks-prod-us-central-0.grafana.net/api/prom/push"
+#     basic_auth:
+#       username: "YOUR_USERNAME"
+#       password: "YOUR_API_KEY"
+
+# ============================================================================
+# REMOTE READ (opcional)
+# ============================================================================
+
+# remote_read:
+#   - url: "https://prometheus-blocks-prod-us-central-0.grafana.net/api/prom/read"
+#     basic_auth:
+#       username: "YOUR_USERNAME"
+#       password: "YOUR_API_KEY"
