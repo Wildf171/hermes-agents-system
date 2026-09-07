@@ -23,16 +23,18 @@ from typing import Optional, Tuple, List
 
 import bcrypt
 import jwt
+import importlib
 from flask import Blueprint, request, jsonify, current_app, g
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from pydantic import BaseModel, EmailStr, Field, validator
 
-# Importar models
-from models.06_MODELS_MONGODB import (
-    UsuarioModel, UsuarioCandidatoSchema, UsuarioRHSchema,
-    TipoUsuarioEnum
-)
+# Importar models (contornar nomes de módulos com números)
+models_module = importlib.import_module('models.06_MODELS_MONGODB')
+UsuarioModel = models_module.UsuarioModel
+UsuarioCandidatoSchema = models_module.UsuarioCandidatoSchema
+UsuarioRHSchema = models_module.UsuarioRHSchema
+TipoUsuarioEnum = models_module.TipoUsuarioEnum
 
 
 # ============================================================================

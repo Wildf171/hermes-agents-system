@@ -18,6 +18,7 @@ Version: 1.0.0
 """
 
 import hashlib
+import importlib
 from datetime import datetime
 from typing import Optional
 from io import BytesIO
@@ -26,12 +27,18 @@ from flask import Blueprint, request, jsonify, current_app, g, send_file
 from pydantic import BaseModel, Field, validator
 from werkzeug.utils import secure_filename
 
-# Importar models
-from models.06_MODELS_MONGODB import (
-    UsuarioModel, CurriculoModel, CurriculoAcessoModel,
-    CurriculoSchema, CurriculoAcessoSchema, AcaoAuditoriaEnum
-)
-from auth.04_AUTH_UNIFICADA import token_required, role_required
+# Importar models (contornar nomes de módulos com números)
+models_module = importlib.import_module('models.06_MODELS_MONGODB')
+UsuarioModel = models_module.UsuarioModel
+CurriculoModel = models_module.CurriculoModel
+CurriculoAcessoModel = models_module.CurriculoAcessoModel
+CurriculoSchema = models_module.CurriculoSchema
+CurriculoAcessoSchema = models_module.CurriculoAcessoSchema
+AcaoAuditoriaEnum = models_module.AcaoAuditoriaEnum
+
+auth_module = importlib.import_module('auth.04_AUTH_UNIFICADA')
+token_required = auth_module.token_required
+role_required = auth_module.role_required
 
 
 # ============================================================================

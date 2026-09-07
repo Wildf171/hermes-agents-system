@@ -134,8 +134,9 @@ def create_app():
         logger.info("MongoDB conectado com sucesso")
 
         # Inicializar índices
-        from models.06_MODELS_MONGODB import setup_database
-        setup_database(app.db)
+        import importlib
+        models_module = importlib.import_module('models.06_MODELS_MONGODB')
+        models_module.setup_database(app.db)
 
     except Exception as e:
         logger.error(f"Erro ao conectar MongoDB: {str(e)}")
@@ -221,15 +222,15 @@ def create_app():
     # BLUEPRINTS - AUTENTICAÇÃO
     # =====================================================================
 
-    from auth.04_AUTH_UNIFICADA import register_auth_bp
-    register_auth_bp(app)
+    auth_module = importlib.import_module('auth.04_AUTH_UNIFICADA')
+    auth_module.register_auth_bp(app)
 
     # =====================================================================
     # BLUEPRINTS - CURRÍCULOS
     # =====================================================================
 
-    from routes.05_ROUTES_NEO_CURRICULOS import register_curriculos_bp
-    register_curriculos_bp(app)
+    routes_module = importlib.import_module('routes.05_ROUTES_NEO_CURRICULOS')
+    routes_module.register_curriculos_bp(app)
 
     # =====================================================================
     # HEALTH CHECK E VERSÃO

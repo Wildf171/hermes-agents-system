@@ -23,7 +23,6 @@ cryptography==41.0.7
 
 # PDF e Arquivo
 PyPDF2==3.0.1
-python-magic-bin==0.4.14
 
 # Testing
 pytest==7.4.3
