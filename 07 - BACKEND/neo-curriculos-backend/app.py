@@ -126,11 +126,17 @@ def create_app():
     # BANCO DE DADOS
     # =====================================================================
 
+    # Conectar ao MongoDB
     try:
-        # Usar PyMongo para gerenciamento de conexão
-        mongo = PyMongo(app)
-        app.db = mongo.db
+        from pymongo import MongoClient
 
+        mongo_uri = app.config['MONGO_URI']
+        mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
+
+        # Testar conexão
+        mongo_client.admin.command('ping')
+
+        app.db = mongo_client.neo_rh
         logger.info("MongoDB conectado com sucesso")
 
         # Inicializar índices
@@ -140,8 +146,14 @@ def create_app():
 
     except Exception as e:
         logger.error(f"Erro ao conectar MongoDB: {str(e)}")
-        # Em dev, continuar sem DB para testes
-        app.db = None
+        # Usar mongomock para dev/testes
+        try:
+            import mongomock
+            app.db = mongomock.MongoClient().neo_rh
+            logger.info("Usando mongomock (banco em memória) para testes")
+        except:
+            logger.error("Não foi possível usar mongomock")
+            app.db = None
 
     # =====================================================================
     # CORS

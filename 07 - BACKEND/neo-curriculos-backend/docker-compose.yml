@@ -1,105 +1,39 @@
 version: '3.8'
 
 services:
-  # =========================================================================
-  # MONGODB
-  # =========================================================================
   mongodb:
     image: mongo:6.0
     container_name: neo_rh_mongodb
+    environment:
+      MONGO_INITDB_DATABASE: neo_rh
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: neo_rh
     volumes:
-      - mongo_data:/data/db
-      - mongo_config:/data/configdb
-      - ./setup/init-mongodb.js:/docker-entrypoint-initdb.d/init.js
+      - mongodb_data:/data/db
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      test: mongosh --eval "db.adminCommand('ping')"
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - neo_network
 
-  # =========================================================================
-  # MINIO (S3 Compatível)
-  # =========================================================================
   minio:
     image: minio/minio:latest
     container_name: neo_rh_minio
-    ports:
-      - "9000:9000"
-      - "9001:9001"
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
     volumes:
-      - minio_data:/data
-    command: server /data --console-address ":9001"
+      - minio_data:/minio_root
+    command: minio server /minio_root --console-address ":9001"
     healthcheck:
       test: curl -f http://localhost:9000/minio/health/live || exit 1
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - neo_network
 
-  # =========================================================================
-  # FLASK APP
-  # =========================================================================
-  flask_app:
-    build: .
-    container_name: neo_rh_backend
-    ports:
-      - "5000:5000"
-    environment:
-      FLASK_ENV: development
-      FLASK_DEBUG: 1
-      FLASK_APP: app.py
-
-      # MongoDB
-      MONGO_URI: mongodb://admin:password@mongodb:27017/neo_rh
-      MONGO_USER: admin
-      MONGO_PASSWORD: password
-      MONGO_DB: neo_rh
-
-      # JWT
-      JWT_SECRET_KEY: seu-secret-key-aqui-min-32-caracteres-aleatorios
-
-      # Storage - MinIO
-      STORAGE_TYPE: minio
-      MINIO_ENDPOINT: minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: neo-curriculos
-      MINIO_USE_SSL: false
-
-      # CORS
-      CORS_ORIGINS: '["http://localhost:3000", "http://localhost:5000"]'
-
-      # Logging
-      LOG_LEVEL: INFO
-      LOG_FORMAT: json
-
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-
-    volumes:
-      - .:/app
-
-    networks:
-      - neo_network
-
-  # =========================================================================
-  # REDIS (Opcional - para rate limiting em produção)
-  # =========================================================================
   redis:
     image: redis:7-alpine
     container_name: neo_rh_redis
@@ -110,14 +44,42 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - neo_network
+
+  app:
+    build: .
+    container_name: neo_rh_backend
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+      FLASK_DEBUG: 1
+      MONGO_URI: mongodb://mongodb:27017/neo_rh
+      JWT_SECRET_KEY: dev-secret-key-min-32-chars
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: neo-curriculos
+      MINIO_USE_SSL: "false"
+    ports:
+      - "5000:5000"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    healthcheck:
+      test: curl -f http://localhost:5000/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
-  mongo_data:
-  mongo_config:
+  mongodb_data:
   minio_data:
 
 networks:
-  neo_network:
-    driver: bridge
+  default:
+    name: neo-curriculos-backend_neo_network
