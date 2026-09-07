@@ -368,7 +368,13 @@
         function updateStatus(elementId, isOk) {
             const el = document.getElementById(elementId);
             if (el) {
-                el.innerHTML = `<span class="status ${isOk ? 'ok' : 'error'}"></span> ${isOk ? 'Online' : 'Offline'}`;
+                // Criar elementos de forma segura
+                el.innerHTML = '';
+                const span = document.createElement('span');
+                span.className = `status ${isOk ? 'ok' : 'error'}`;
+                const text = document.createTextNode(isOk ? ' Online' : ' Offline');
+                el.appendChild(span);
+                el.appendChild(text);
             }
         }
 
@@ -403,14 +409,18 @@
         function showResponse(id, data, status, success) {
             const el = document.getElementById(id);
             const statusClass = success ? 'success' : 'error';
-            const statusBadge = success ? '✓ OK' : '✗ Erro';
 
-            el.innerHTML = `
-                <div class="response ${statusClass}">
-Status: ${status || 'Error'}<br><br>
-${JSON.stringify(data, null, 2)}
-                </div>
-            `;
+            // Usar textContent para evitar XSS
+            const responseDiv = document.createElement('div');
+            responseDiv.className = `response ${statusClass}`;
+
+            const jsonStr = JSON.stringify(data, null, 2);
+            const statusText = `Status: ${status || 'Error'}\n\n${jsonStr}`;
+            responseDiv.textContent = statusText;
+
+            // Limpar resposta anterior e adicionar nova
+            el.innerHTML = '';
+            el.appendChild(responseDiv);
         }
 
         // Test functions
