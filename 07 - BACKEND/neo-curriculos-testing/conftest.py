@@ -95,10 +95,13 @@ def db_clean(client):
 
     Remove todas as collections e recreia índices
     """
+    import importlib
     from flask import current_app
-    from models.06_MODELS_MONGODB import (
-        UsuarioModel, CurriculoModel, CurriculoAcessoModel
-    )
+
+    models_module = importlib.import_module('models.06_MODELS_MONGODB')
+    UsuarioModel = models_module.UsuarioModel
+    CurriculoModel = models_module.CurriculoModel
+    CurriculoAcessoModel = models_module.CurriculoAcessoModel
 
     app = current_app
     db = app.db
@@ -159,10 +162,17 @@ def registrar_rh(client, db_clean):
 
     Retorna token JWT e dados do usuário RH
     """
-    from models.06_MODELS_MONGODB import UsuarioModel, UsuarioRHSchema
-    from auth.04_AUTH_UNIFICADA import hash_password, criar_tokens
+    import importlib
     from flask import current_app
     from bson import ObjectId
+
+    models_module = importlib.import_module('models.06_MODELS_MONGODB')
+    UsuarioModel = models_module.UsuarioModel
+    UsuarioRHSchema = models_module.UsuarioRHSchema
+
+    auth_module = importlib.import_module('auth.04_AUTH_UNIFICADA')
+    hash_password = auth_module.hash_password
+    criar_tokens = auth_module.criar_tokens
 
     db = current_app.db
 

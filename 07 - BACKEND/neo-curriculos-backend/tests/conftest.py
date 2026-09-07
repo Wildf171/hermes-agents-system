@@ -20,13 +20,20 @@ import pytest
 from datetime import datetime
 from unittest.mock import MagicMock
 from io import BytesIO
+import importlib
 
 # Adicionar diretório raiz ao path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app import create_app
-from auth.04_AUTH_UNIFICADA import hash_password, criar_tokens
-from models.06_MODELS_MONGODB import TipoUsuarioEnum
+
+# Importar módulos com números usando importlib
+auth_module = importlib.import_module('auth.04_AUTH_UNIFICADA')
+hash_password = auth_module.hash_password
+criar_tokens = auth_module.criar_tokens
+
+models_module = importlib.import_module('models.06_MODELS_MONGODB')
+TipoUsuarioEnum = models_module.TipoUsuarioEnum
 
 
 @pytest.fixture

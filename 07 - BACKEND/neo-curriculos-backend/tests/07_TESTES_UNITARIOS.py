@@ -20,13 +20,23 @@ import json
 from datetime import datetime, timedelta
 from unittest.mock import Mock, patch, MagicMock
 from io import BytesIO
+import importlib
 
 from app import create_app
-from models.06_MODELS_MONGODB import (
-    UsuarioModel, CurriculoModel, CurriculoAcessoModel,
-    TipoUsuarioEnum, UsuarioCandidatoSchema, CurriculoSchema
-)
-from auth.04_AUTH_UNIFICADA import hash_password, verify_password, criar_tokens
+
+# Importar com importlib para contornar nomes com números
+models_module = importlib.import_module('models.06_MODELS_MONGODB')
+UsuarioModel = models_module.UsuarioModel
+CurriculoModel = models_module.CurriculoModel
+CurriculoAcessoModel = models_module.CurriculoAcessoModel
+TipoUsuarioEnum = models_module.TipoUsuarioEnum
+UsuarioCandidatoSchema = models_module.UsuarioCandidatoSchema
+CurriculoSchema = models_module.CurriculoSchema
+
+auth_module = importlib.import_module('auth.04_AUTH_UNIFICADA')
+hash_password = auth_module.hash_password
+verify_password = auth_module.verify_password
+criar_tokens = auth_module.criar_tokens
 
 
 # ============================================================================
@@ -266,7 +276,7 @@ class TestAutenticacao:
 
     def test_token_expirado(self, app):
         """Token expirado deve ser rejeitado"""
-        from auth.04_AUTH_UNIFICADA import validar_token
+        validar_token = auth_module.validar_token
         import jwt
 
         secret_key = app.config['JWT_SECRET_KEY']
@@ -468,7 +478,8 @@ class TestUploadCurriculo:
 
     def test_hash_calculado_corretamente(self, app):
         """Hash SHA256 calculado corretamente"""
-        from routes.05_ROUTES_NEO_CURRICULOS import calcular_hash_arquivo
+        routes_module = importlib.import_module('routes.05_ROUTES_NEO_CURRICULOS')
+        calcular_hash_arquivo = routes_module.calcular_hash_arquivo
         import hashlib
 
         conteudo = b'test pdf content'
@@ -573,7 +584,7 @@ class TestLGPD:
 
     def test_anonimizar_apos_30_dias(self, app):
         """Anonimizar dados após 30 dias"""
-        from models.06_MODELS_MONGODB import UsuarioModel
+        UsuarioModel_local = models_module.UsuarioModel
 
         # Teste de implementação no modelo
         # UsuarioModel.anonimizar() substituir nome e email por hash
@@ -583,7 +594,7 @@ class TestLGPD:
 
     def test_ttl_index_funciona(self, app):
         """TTL index para retenção automática"""
-        from models.06_MODELS_MONGODB import CurriculoAcessoModel
+        CurriculoAcessoModel_local = models_module.CurriculoAcessoModel
 
         # Verificar que o modelo tem TTL setup
         with app.app_context():
@@ -753,7 +764,7 @@ class TestSeguranca:
 
     def test_token_nao_expira_antes(self, app):
         """Token não expira antes do tempo"""
-        from auth.04_AUTH_UNIFICADA import validar_token
+        validar_token_local = auth_module.validar_token
         import jwt
 
         secret_key = app.config['JWT_SECRET_KEY']
