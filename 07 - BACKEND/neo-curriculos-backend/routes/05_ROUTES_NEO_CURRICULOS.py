@@ -19,6 +19,7 @@ Version: 1.0.0
 
 import hashlib
 import importlib
+import re
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -92,6 +93,11 @@ def arquivo_permitido(filename: str) -> bool:
 def calcular_hash_arquivo(conteudo: bytes) -> str:
     """Calcular SHA256 do arquivo"""
     return hashlib.sha256(conteudo).hexdigest()
+
+
+def escapar_regex_pattern(pattern: str) -> str:
+    """Escapar caracteres especiais de regex para safety"""
+    return re.escape(pattern)
 
 
 def fazer_upload_s3(conteudo: bytes, chave: str) -> str:
@@ -571,16 +577,41 @@ def buscar_curriculos():
 
         # Filtros opcionais
         if estado:
-            filtro['estado'] = estado.upper()
+            # Validar estado (apenas 2 letras maiúsculas)
+            if re.match(r'^[A-Z]{2}$', estado.upper()):
+                filtro['estado'] = estado.upper()
         if categoria:
-            filtro['categoria'] = {'$regex': categoria, '$options': 'i'}
+            # Validar categoria: apenas alphanúmericos, espaço e hífen (max 100 chars)
+            # Previne regex injection e XSS
+            if re.match(r'^[a-zA-Z0-9\s\-]{1,100}$', categoria):
+                # Escapar para regex seguro
+                categoria_escaped = escapar_regex_pattern(categoria)
+                filtro['categoria'] = {'$regex': categoria_escaped, '$options': 'i'}
+            # Se não passar validação, categoria é ignorada silenciosamente
         if data_criacao:
             try:
                 data_obj = datetime.fromisoformat(data_criacao)
                 filtro['criado_em'] = {'$gte': data_obj}
             except ValueError:
                 pass
-        if empresa_id:
+
+        # Validar IDOR: usuários empresa/rh/recruiter só podem ver currículos de sua empresa
+        usuario = UsuarioModel.find_by_id(db, g.usuario_id)
+
+        if g.tipo in ['empresa', 'rh', 'recruiter']:
+            # Empresa, RH e Recruiter só acessam currículos de sua própria empresa
+            if usuario and usuario.get('empresa_id'):
+                filtro['empresa_id'] = usuario['empresa_id']
+            else:
+                # Se é empresa/rh/recruiter mas não tem empresa_id, retornar vazio
+                filtro['empresa_id'] = None
+        elif empresa_id and g.tipo != 'admin':
+            # Apenas admin pode buscar currículos de empresa específica
+            return jsonify({
+                'erro': 'Acesso negado para filtrar por empresa específica'
+            }), 403
+        elif g.tipo == 'admin' and empresa_id:
+            # Admin pode filtrar por empresa específica se fornecido
             filtro['empresa_id'] = empresa_id
 
         collection = db['curriculos']
