@@ -59,6 +59,7 @@ class UsuarioCandidatoSchema(BaseModel):
     consentimento: bool = False
     consentimento_data: Optional[datetime] = None
     consentimento_versao: Optional[str] = None
+    primeira_vez: bool = True
     criado_em: datetime = Field(default_factory=datetime.utcnow)
     atualizado_em: datetime = Field(default_factory=datetime.utcnow)
     ativo: bool = True
@@ -77,6 +78,7 @@ class UsuarioRHSchema(BaseModel):
     tipo: TipoUsuarioEnum = Field(...)  # rh, recruiter, admin, empresa
     eh_candidato: bool = False
     empresa_id: Optional[str] = None
+    primeira_vez: bool = True
     criado_em: datetime = Field(default_factory=datetime.utcnow)
     atualizado_em: datetime = Field(default_factory=datetime.utcnow)
     ativo: bool = True

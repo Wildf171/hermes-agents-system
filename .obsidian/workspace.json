@@ -183,6 +183,7 @@
   },
   "active": "641b0252c5eaf85e",
   "lastOpenFiles": [
+    "07 - BACKEND/neo-curriculos-backend/tests/test_neo_curriculos.py",
     "API_TEST_PANEL.html",
     "API_TEST_PANEL.html.tmp.28704.3bc8729a07e7",
     "07 - BACKEND/neo-curriculos-backend/routes/__pycache__/__init__.cpython-311.pyc",
@@ -193,7 +194,6 @@
     "07 - BACKEND/neo-curriculos-backend/auth/__pycache__",
     "07 - BACKEND/neo-curriculos-backend/models/__pycache__/__init__.cpython-311.pyc",
     "07 - BACKEND/neo-curriculos-backend/models/__pycache__/06_MODELS_MONGODB.cpython-311.pyc",
-    "07 - BACKEND/neo-curriculos-backend/models/__pycache__",
     "07 - BACKEND/neo-curriculos-design/README.md",
     "README_FINAL.md",
     "07 - BACKEND/neo-curriculos-design/03_SCHEMA_MONGODB_DETALHADO.md",

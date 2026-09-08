@@ -86,6 +86,7 @@ class TokenResponse(BaseModel):
     usuario_id: str
     tipo: str
     nome: str
+    primeira_vez: bool
 
 
 class UsuarioResponse(BaseModel):
@@ -340,7 +341,8 @@ def registrar():
             'token_type': 'Bearer',
             'expires_in': current_app.config.get('JWT_ACCESS_TOKEN_EXPIRES', 86400),
             'tipo': TipoUsuarioEnum.CANDIDATO,
-            'nome': req.nome
+            'nome': req.nome,
+            'primeira_vez': True
         }), 201
 
     except ValueError as e:
@@ -405,6 +407,16 @@ def login():
         # Log
         current_app.logger.info(f"Login bem-sucedido: {usuario_id} ({tipo})")
 
+        # Retornar primeira_vez e depois atualizar para false
+        primeira_vez = usuario.get('primeira_vez', True)
+
+        # Atualizar primeira_vez para false após resposta
+        if primeira_vez:
+            try:
+                db.usuarios.update_one({'_id': usuario['_id']}, {'$set': {'primeira_vez': False}})
+            except Exception as e:
+                current_app.logger.warning(f"Erro ao atualizar primeira_vez: {str(e)}")
+
         return jsonify({
             'usuario_id': usuario_id,
             'access_token': access_token,
@@ -412,7 +424,8 @@ def login():
             'token_type': 'Bearer',
             'expires_in': current_app.config.get('JWT_ACCESS_TOKEN_EXPIRES', 86400),
             'tipo': tipo,
-            'nome': usuario['nome']
+            'nome': usuario['nome'],
+            'primeira_vez': primeira_vez
         }), 200
 
     except ValueError as e:
@@ -423,6 +436,7 @@ def login():
 
 
 @auth_bp.route('/refresh', methods=['POST'])
+@limiter.limit("30/1hour")
 def refresh():
     """
     POST /api/auth/refresh

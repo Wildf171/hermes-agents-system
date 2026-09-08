@@ -19,11 +19,12 @@ Version: 1.0.0
 
 import hashlib
 import importlib
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
-from io import BytesIO
 
-from flask import Blueprint, request, jsonify, current_app, g, send_file
+import boto3
+from botocore.exceptions import ClientError
+from flask import Blueprint, request, jsonify, current_app, g
 from pydantic import BaseModel, Field, validator
 from werkzeug.utils import secure_filename
 
@@ -91,6 +92,51 @@ def arquivo_permitido(filename: str) -> bool:
 def calcular_hash_arquivo(conteudo: bytes) -> str:
     """Calcular SHA256 do arquivo"""
     return hashlib.sha256(conteudo).hexdigest()
+
+
+def fazer_upload_s3(conteudo: bytes, chave: str) -> str:
+    """
+    Fazer upload para S3/MinIO
+    Retorna URL pública do arquivo ou raises Exception
+    """
+    try:
+        s3_config = current_app.config.get('S3_CONFIG', {})
+        if not s3_config:
+            raise ValueError("S3 não configurado")
+
+        s3 = boto3.client(
+            's3',
+            endpoint_url=s3_config.get('endpoint_url'),
+            aws_access_key_id=s3_config.get('aws_access_key_id'),
+            aws_secret_access_key=s3_config.get('aws_secret_access_key'),
+            region_name=s3_config.get('region_name', 'us-east-1')
+        )
+
+        bucket = s3_config.get('bucket_name', 'neo-curriculos')
+
+        # Upload com metadados
+        s3.put_object(
+            Bucket=bucket,
+            Key=chave,
+            Body=conteudo,
+            ContentType='application/pdf',
+            ServerSideEncryption='AES256'
+        )
+
+        # Construir URL pública
+        if s3_config.get('endpoint_url'):
+            url = f"{s3_config['endpoint_url']}/{bucket}/{chave}"
+        else:
+            url = f"https://{bucket}.s3.amazonaws.com/{chave}"
+
+        return url
+
+    except ClientError as e:
+        current_app.logger.error(f"Erro S3 (ClientError): {str(e)}")
+        raise
+    except Exception as e:
+        current_app.logger.error(f"Erro ao fazer upload: {str(e)}")
+        raise
 
 
 def registrar_auditoria(usuario_id: str, curriculo_id: str,
@@ -204,8 +250,14 @@ def upload_curriculo():
         arquivo_hash = calcular_hash_arquivo(conteudo)
 
         # Fazer upload para storage (S3/MinIO)
-        # TODO: Implementar upload real
-        arquivo_url = f"s3://neo-curriculos/{g.usuario_id}/{arquivo_hash}.pdf"
+        chave_s3 = f"curriculos/{g.usuario_id}/{arquivo_hash}.pdf"
+        try:
+            arquivo_url = fazer_upload_s3(conteudo, chave_s3)
+        except Exception as e:
+            current_app.logger.error(f"Falha no upload S3: {str(e)}")
+            return jsonify({
+                'erro': 'Erro ao fazer upload do arquivo. Tente novamente.'
+            }), 500
 
         # Criar objeto currículo
         curriculo = CurriculoSchema(
@@ -438,7 +490,6 @@ def deletar_conta(usuario_id: str):
         )
 
         # Calcular data de anonimização
-        from datetime import timedelta
         sera_anonimizado_em = (datetime.utcnow() + timedelta(days=30)).isoformat()
 
         current_app.logger.info(
@@ -502,6 +553,10 @@ def buscar_curriculos():
     try:
         limit = request.args.get('limit', 20, type=int)
         offset = request.args.get('offset', 0, type=int)
+        estado = request.args.get('estado', None)
+        categoria = request.args.get('categoria', None)
+        data_criacao = request.args.get('data_criacao', None)
+        empresa_id = request.args.get('empresa_id', None)
 
         # Validar paginação
         if limit < 1 or limit > 100:
@@ -511,19 +566,33 @@ def buscar_curriculos():
 
         db = current_app.db
 
-        # TODO: Implementar filtros reais (estado, categoria, data_criacao, empresa_id)
-        # Por agora, retornar currículos ativos mais recentes
+        # Construir filtro dinâmico
+        filtro = {'ativo': True}
+
+        # Filtros opcionais
+        if estado:
+            filtro['estado'] = estado.upper()
+        if categoria:
+            filtro['categoria'] = {'$regex': categoria, '$options': 'i'}
+        if data_criacao:
+            try:
+                data_obj = datetime.fromisoformat(data_criacao)
+                filtro['criado_em'] = {'$gte': data_obj}
+            except ValueError:
+                pass
+        if empresa_id:
+            filtro['empresa_id'] = empresa_id
 
         collection = db['curriculos']
         curriculos = list(collection.find(
-            {'ativo': True},
+            filtro,
             sort=[('criado_em', -1)],
             skip=offset,
             limit=limit
         ))
 
-        # Contar total
-        total = collection.count_documents({'ativo': True})
+        # Contar total com filtros aplicados
+        total = collection.count_documents(filtro)
 
         # Enriquecer com dados do usuário
         curriculos_resposta = []
